@@ -1,0 +1,60 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Home page";
+    int WeekLength = 7;
+
+
+}
+
+@*<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
+    @foreach (var user in Model.Users)
+    {
+    <h1>@user.Username</h1>
+
+    }
+*@
+
+@for (var i = 0; i < WeekLength; i++)
+{
+
+}
+
+<div class="container-fluid page-body-wrapper">
+    <partial name="_SettingsPanel" />
+    <partial name="_RightSidebar" />
+    <partial name="_LeftSidebar" />
+    <!-- partial -->
+    <!-- partial:partials/_sidebar.html -->
+
+    <partial name="_MainContent" />
+</div>
+
+@section scripts{
+<script type="text/javascript">
+
+    let thisWeekTransaction = new Array();
+    thisWeekTransaction[0] = @Model.ThisWeek.Mon;
+    thisWeekTransaction[1] = @Model.ThisWeek.Tue;
+    thisWeekTransaction[2] = @Model.ThisWeek.Wed;
+    thisWeekTransaction[3] = @Model.ThisWeek.Thu;
+    thisWeekTransaction[4] = @Model.ThisWeek.Fri;
+    thisWeekTransaction[5] = @Model.ThisWeek.Sat;
+    thisWeekTransaction[6] = @Model.ThisWeek.Sun;
+    console.log(thisWeekTransaction);
+
+    let lastWeekTransaction = new Array();
+    lastWeekTransaction[0] = @Model.LastWeek.Mon;
+    lastWeekTransaction[1] = @Model.LastWeek.Tue;
+    lastWeekTransaction[2] = @Model.LastWeek.Wed;
+    lastWeekTransaction[3] = @Model.LastWeek.Thu;
+    lastWeekTransaction[4] = @Model.LastWeek.Fri;
+    lastWeekTransaction[5] = @Model.LastWeek.Sat;
+    lastWeekTransaction[6] = @Model.LastWeek.Sun;
+    console.log(lastWeekTransaction);
+</script>
+}
