@@ -7,6 +7,6 @@ namespace BankWebApp.Services
     {
         public int NumberOfAllCustomers();
 
-        public PagedResult<Customer> GetAll(int page);
+        public PagedResult<Customer> GetAll(int page, string sortColumn, string sortOrder, string searchWord);
     }
 }

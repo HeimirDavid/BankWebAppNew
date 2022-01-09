@@ -5,18 +5,55 @@
     int BelowCurrentPage = 3;
 }
 
-<div class="container">
+<div class="container mt-5 pt-5">
 
     <h3 class="mt-5 pt-5">Sidan @Model.CurrentPage av @Model.PageCount</h3>
+    <form method="GET">
+        <input asp-for="@Model.SearchWord" />
+        <input class="btn btn-primary" type="submit" value="Sök" />
+    </form>
 
     <table class="table mt-5">
         <thead>
             <tr>
                 <th>
                     Id
+                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerId" asp-route-sortOrder="asc">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
+                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerId" asp-route-sortOrder="desc">
+                        <i class="fas fa-angle-down"></i>
+                    </a>
                 </th>
                 <th>
                     Name
+                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerName" asp-route-sortOrder="asc">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
+                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerName" asp-route-sortOrder="desc">
+                        <i class="fas fa-angle-down"></i>
+                    </a>
+                </th>
+                <th>
+                    Address
+                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerAddress" asp-route-sortOrder="asc">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
+                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerAddress" asp-route-sortOrder="desc">
+                        <i class="fas fa-angle-down"></i>
+                    </a>
+                </th>
+                <th>
+                    City
+                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerCity" asp-route-sortOrder="asc">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
+                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerCity" asp-route-sortOrder="desc">
+                        <i class="fas fa-angle-down"></i>
+                    </a>
+                </th>
+                <th>
+                    SSN
                 </th>
             </tr>
         </thead>
@@ -26,6 +63,9 @@
                 <tr>
                     <td>@item.Id</td>
                     <td>@item.Name</td>
+                    <td>@item.Address</td>
+                    <td>@item.City</td>
+                    <td>@item.SSN</td>
                 </tr>
             }
         </tbody>
@@ -37,14 +77,21 @@
         <div>
             @if (Model.CurrentPage != 1)
             {
-                <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno="1">
+                <a class="btn btn-secondary" asp-page="/Customers"
+               asp-route-pageno="1"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
                     1
                 </a>
                 <a class="btn btn-secondary" asp-page="/Customers"
-               asp-route-pageno="@(Model.CurrentPage-1)">
+               asp-route-pageno="@(Model.CurrentPage-1)"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
                     Prev
                 </a>
-                
+
             }
         </div>
         <!--   Div för nummer   -->
@@ -54,7 +101,11 @@
             {
                 @if (!(i > Model.CurrentPage + BelowCurrentPage) && (i > Model.CurrentPage - AboveCurrentPage))
                 {
-                    <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Customers" asp-route-pageno="@i">
+                    <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Customers"
+               asp-route-pageno="@i"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
                         @i
                     </a>
                 }
@@ -64,55 +115,62 @@
 
         <div>
             <a class="btn btn-secondary" asp-page="/Customers"
-               asp-route-pageno="@(Model.CurrentPage+1)">
+               asp-route-pageno="@(Model.CurrentPage+1)"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
                 Next
             </a>
-            <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno=" @Model.PageCount">
+            <a class="btn btn-secondary" asp-page="/Customers"
+               asp-route-pageno="@Model.PageCount"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
                 @Model.PageCount
             </a>
-            
+
         </div>
     </div>
 
 
     @*<table class="table">
         <tbody>
-            <tr>
-                <td>
-                    @if (Model.CurrentPage != 1)
-                    {
-                        <a class="btn btn-secondary" asp-page="/Customers"
-                       asp-route-pageno="@(Model.CurrentPage-1)">
-                            Prev
-                        </a>
-                        <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno="1">
-                            1
-                        </a>
-                    }
-                </td>
-                <td>
-                    @for (var i = 1; i <= Model.PageCount; i++)
-                    {
-                        @if (!(i > Model.CurrentPage + 5) && (i > Model.CurrentPage - 6))
-                        {
-                            <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Customers" asp-route-pageno="@i">
-                                @i
-                            </a>
-                        }
-                    }
-                <td></td>
-                <td>
-                    <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno=" @Model.PageCount">
-                            @Model.PageCount
-                    </a>
-                    <a class="btn btn-secondary" asp-page="/Customers"
-                       asp-route-pageno="@(Model.CurrentPage+1)">
-                        Next
-                    </a>
-                </td>
-            </tr>
+        <tr>
+        <td>
+        @if (Model.CurrentPage != 1)
+        {
+        <a class="btn btn-secondary" asp-page="/Customers"
+        asp-route-pageno="@(Model.CurrentPage-1)">
+        Prev
+        </a>
+        <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno="1">
+        1
+        </a>
+        }
+        </td>
+        <td>
+        @for (var i = 1; i <= Model.PageCount; i++)
+        {
+        @if (!(i > Model.CurrentPage + 5) && (i > Model.CurrentPage - 6))
+        {
+        <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Customers" asp-route-pageno="@i">
+        @i
+        </a>
+        }
+        }
+        <td></td>
+        <td>
+        <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno=" @Model.PageCount">
+        @Model.PageCount
+        </a>
+        <a class="btn btn-secondary" asp-page="/Customers"
+        asp-route-pageno="@(Model.CurrentPage+1)">
+        Next
+        </a>
+        </td>
+        </tr>
         </tbody>
-    </table>*@
+        </table>*@
 
 </div>
 

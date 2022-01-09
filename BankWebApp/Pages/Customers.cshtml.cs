@@ -1,4 +1,5 @@
 using BankWebApp.Services;
+using BankWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,30 +15,35 @@ namespace BankWebApp.Pages
         }
         public int CurrentPage { get; set; }
         public int PageCount { get; set; }
-        public List<Item> Items { get; set; }
+        public List<CustomerList> Items { get; set; }
+        public string SortOrder { get; set; }
+        public string SortColumn { get; set; }
+        public string CustomerName { get; set; }
+        public string SearchWord { get; set; }
 
-        public class Item
+        public void OnGet(string sortColumn, string sortOrder, int pageno, string searchWord)
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
+            SortOrder = sortOrder;
+            SortColumn = sortColumn;
+            SearchWord = searchWord;
 
-        public void OnGet(int pageno)
-        {
             if (pageno == 0)
             {
                 pageno = 1;
             }
             CurrentPage = pageno;
-            var pageResult = _customerService.GetAll(CurrentPage);
+            var pageResult = _customerService.GetAll(CurrentPage, sortColumn, sortOrder, searchWord);
 
             PageCount = pageResult.PageCount;
 
 
-            Items = pageResult.Results.Select(i => new Item
+            Items = pageResult.Results.Select(i => new CustomerList
             {
                 Id = i.CustomerId,
                 Name = i.Givenname,
+                Address = i.Streetaddress,
+                City = i.City,
+                SSN = i.NationalId,
             }).ToList();
         }
     }
