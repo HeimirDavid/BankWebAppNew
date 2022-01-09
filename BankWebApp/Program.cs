@@ -11,6 +11,9 @@ builder.Services.AddDbContext<BankContext>(options =>
        builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITransactionService, TransactionService>();
+builder.Services.AddTransient<ICustomerService, CustomerService>();
+builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<ISaldoService, SaldoService>();
 
 
 var app = builder.Build();
