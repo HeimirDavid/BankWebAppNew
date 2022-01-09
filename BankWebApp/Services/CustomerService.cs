@@ -1,4 +1,5 @@
-﻿using BankWebApp.Models;
+﻿using BankWebApp.Infrastructure.Paging;
+using BankWebApp.Models;
 
 namespace BankWebApp.Services
 {
@@ -10,10 +11,17 @@ namespace BankWebApp.Services
         {
             _context = bankContext;
         }
+
         public int NumberOfAllCustomers()
         {
             int NumOfCustomers = _context.Customers.Count();
             return NumOfCustomers;
+        }
+
+        public PagedResult<Customer> GetAll(int page)
+        {
+            var query = _context.Customers;
+            return query.GetPaged(page, 5);
         }
     }
 }

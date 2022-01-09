@@ -1,10 +1,118 @@
 ﻿@page
 @model BankWebApp.Pages.CustomersModel
 @{
+    int AboveCurrentPage = 4;
+    int BelowCurrentPage = 3;
 }
 
-<h1>Customers Things</h1>
-<h1>Customers Things</h1>
-<h1>Customers Things</h1>
-<h1>Customers Things</h1>
-<h1>Customers Things</h1>
+<div class="container">
+
+    <h3 class="mt-5 pt-5">Sidan @Model.CurrentPage av @Model.PageCount</h3>
+
+    <table class="table mt-5">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <!--  Container for pagination   -->
+    <div class="d-flex justify-content-between">
+        <!--   Div för första prev   -->
+
+        <div>
+            @if (Model.CurrentPage != 1)
+            {
+                <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno="1">
+                    1
+                </a>
+                <a class="btn btn-secondary" asp-page="/Customers"
+               asp-route-pageno="@(Model.CurrentPage-1)">
+                    Prev
+                </a>
+                
+            }
+        </div>
+        <!--   Div för nummer   -->
+
+        <div>
+            @for (var i = 1; i <= Model.PageCount; i++)
+            {
+                @if (!(i > Model.CurrentPage + BelowCurrentPage) && (i > Model.CurrentPage - AboveCurrentPage))
+                {
+                    <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Customers" asp-route-pageno="@i">
+                        @i
+                    </a>
+                }
+            }
+        </div>
+        <!--   Div för sista next   -->
+
+        <div>
+            <a class="btn btn-secondary" asp-page="/Customers"
+               asp-route-pageno="@(Model.CurrentPage+1)">
+                Next
+            </a>
+            <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno=" @Model.PageCount">
+                @Model.PageCount
+            </a>
+            
+        </div>
+    </div>
+
+
+    @*<table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    @if (Model.CurrentPage != 1)
+                    {
+                        <a class="btn btn-secondary" asp-page="/Customers"
+                       asp-route-pageno="@(Model.CurrentPage-1)">
+                            Prev
+                        </a>
+                        <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno="1">
+                            1
+                        </a>
+                    }
+                </td>
+                <td>
+                    @for (var i = 1; i <= Model.PageCount; i++)
+                    {
+                        @if (!(i > Model.CurrentPage + 5) && (i > Model.CurrentPage - 6))
+                        {
+                            <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Customers" asp-route-pageno="@i">
+                                @i
+                            </a>
+                        }
+                    }
+                <td></td>
+                <td>
+                    <a class="btn btn-secondary" asp-page="/Customers" asp-route-pageno=" @Model.PageCount">
+                            @Model.PageCount
+                    </a>
+                    <a class="btn btn-secondary" asp-page="/Customers"
+                       asp-route-pageno="@(Model.CurrentPage+1)">
+                        Next
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>*@
+
+</div>
+
