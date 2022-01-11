@@ -13,48 +13,49 @@
         <input class="btn btn-primary" type="submit" value="Sök" />
     </form>
 
-    <table class="table mt-5">
+    <table class="table table-hover mt-5 mb-2">
         <thead>
             <tr>
                 <th>
                     Id
-                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerId" asp-route-sortOrder="asc">
+                    <a asp-page="/Customers/CustomersIndex" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerId" asp-route-sortOrder="asc">
                         <i class="fas fa-angle-up"></i>
                     </a>
-                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerId" asp-route-sortOrder="desc">
+                    <a asp-page="/Customers/CustomersIndex" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerId" asp-route-sortOrder="desc">
                         <i class="fas fa-angle-down"></i>
                     </a>
                 </th>
                 <th>
                     Name
-                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerName" asp-route-sortOrder="asc">
+                    <a asp-page="/Customers/CustomersIndex" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerName" asp-route-sortOrder="asc">
                         <i class="fas fa-angle-up"></i>
                     </a>
-                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerName" asp-route-sortOrder="desc">
+                    <a asp-page="/Customers/CustomersIndex" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerName" asp-route-sortOrder="desc">
                         <i class="fas fa-angle-down"></i>
                     </a>
                 </th>
                 <th>
                     Address
-                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerAddress" asp-route-sortOrder="asc">
+                    <a asp-page="/Customers/CustomersIndex" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerAddress" asp-route-sortOrder="asc">
                         <i class="fas fa-angle-up"></i>
                     </a>
-                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerAddress" asp-route-sortOrder="desc">
+                    <a asp-page="/Customers/CustomersIndex" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerAddress" asp-route-sortOrder="desc">
                         <i class="fas fa-angle-down"></i>
                     </a>
                 </th>
                 <th>
                     City
-                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerCity" asp-route-sortOrder="asc">
+                    <a asp-page="/Customers/CustomersIndex" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerCity" asp-route-sortOrder="asc">
                         <i class="fas fa-angle-up"></i>
                     </a>
-                    <a asp-page="/Customers" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerCity" asp-route-sortOrder="desc">
+                    <a asp-page="/Customers/CustomersIndex" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="CustomerCity" asp-route-sortOrder="desc">
                         <i class="fas fa-angle-down"></i>
                     </a>
                 </th>
                 <th>
                     SSN
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -66,6 +67,9 @@
                     <td>@item.Address</td>
                     <td>@item.City</td>
                     <td>@item.SSN</td>
+                    <td>
+                        <a class="btn btn-primary" asp-page="/Customers/Customer" asp-route-customerId="@item.Id">View</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -77,14 +81,14 @@
         <div>
             @if (Model.CurrentPage != 1)
             {
-                <a class="btn btn-secondary" asp-page="/Customers"
+                <a class="btn btn-secondary" asp-page="/Customers/CustomersIndex"
                asp-route-pageno="1"
                asp-route-searchWord="@Model.SearchWord"
                asp-route-sortColumn="@Model.SortColumn"
                asp-route-sortOrder="@Model.SortOrder">
                     1
                 </a>
-                <a class="btn btn-secondary" asp-page="/Customers"
+                <a class="btn btn-secondary" asp-page="/Customers/CustomersIndex"
                asp-route-pageno="@(Model.CurrentPage-1)"
                asp-route-searchWord="@Model.SearchWord"
                asp-route-sortColumn="@Model.SortColumn"
@@ -101,27 +105,27 @@
             {
                 @if (!(i > Model.CurrentPage + BelowCurrentPage) && (i > Model.CurrentPage - AboveCurrentPage))
                 {
-                    <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Customers"
+                    <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Customers/CustomersIndex"
                asp-route-pageno="@i"
                asp-route-searchWord="@Model.SearchWord"
                asp-route-sortColumn="@Model.SortColumn"
                asp-route-sortOrder="@Model.SortOrder">
                         @i
                     </a>
-                }
+                } 
             }
         </div>
         <!--   Div för sista next   -->
 
         <div>
-            <a class="btn btn-secondary" asp-page="/Customers"
+            <a class="btn btn-secondary" asp-page="/Customers/CustomersIndex"
                asp-route-pageno="@(Model.CurrentPage+1)"
                asp-route-searchWord="@Model.SearchWord"
                asp-route-sortColumn="@Model.SortColumn"
                asp-route-sortOrder="@Model.SortOrder">
                 Next
             </a>
-            <a class="btn btn-secondary" asp-page="/Customers"
+            <a class="btn btn-secondary" asp-page="/Customers/CustomersIndex"
                asp-route-pageno="@Model.PageCount"
                asp-route-searchWord="@Model.SearchWord"
                asp-route-sortColumn="@Model.SortColumn"

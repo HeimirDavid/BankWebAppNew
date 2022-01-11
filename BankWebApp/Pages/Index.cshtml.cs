@@ -124,11 +124,11 @@ namespace BankWebApp.Pages
         {
             var Transactions = _transactionService.GetThisWeek();
 
-            var numberOfTransactions = new List<int>();
+            //var numberOfTransactions = new List<int>();
 
-            var PreviousDate = new DateTime();
+            //var PreviousDate = new DateTime();
 
-            var FirstDate = Transactions.ToList().First().Date;
+            //var FirstDate = Transactions.ToList().First().Date;
 
             TransactionPerWeekDay transactionPerWeekDay = new TransactionPerWeekDay();
 

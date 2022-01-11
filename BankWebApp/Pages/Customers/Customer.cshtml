@@ -1,0 +1,121 @@
+﻿@page
+@model BankWebApp.Pages.Customers.CustomerModel
+@{
+}
+
+
+@*
+
+    <div class="container mt-5 pt-5">
+    <table class="table table-hover mt-5 mb-2">
+    <thead>
+    <tr>
+    <th>
+
+    </th>
+    </thead>
+    <tbody>
+    <tr>
+    <td>
+    </td>
+    </tr>
+
+    </tbody>
+    </table>
+
+    </div>
+*@
+
+
+
+<div class="container mt-5 pt-5">
+    <h2 class="mt-5">Customer Page - @Model.Customer.Givenname</h2>
+
+    <hr class="mt-5" />
+    <dl class="row mt-2">
+        <dt class="col-md-3 col-5 text-key">Account No</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Id</dd>
+
+        <dt class="col-md-3 col-5 text-key">Given Name</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Givenname</dd>
+
+        <dt class="col-md-3 col-5 text-key">Surname</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Surname</dd>
+
+        <dt class="col-md-3 col-5 text-key">Street Address</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Streetaddress</dd>
+
+        <dt class="col-md-3 col-5 text-key">City</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.City
+
+        <dt class="col-md-3 col-5 text-key">Zip Code</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Zipcode</dd>
+
+        <dt class="col-md-3 col-5 text-key">Country</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Country</dd>
+
+        <dt class="col-md-3 col-5 text-key">Country Code</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.CountryCode</dd>
+
+        <dt class="col-md-3 col-5 text-key">Email Address</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Emailaddress</dd>
+
+        <dt class="col-md-3 col-5 text-key">Tel-Country Code</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Telephonecountrycode</dd>
+
+        <dt class="col-md-3 col-5 text-key">Phone Number</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Telephonenumber</dd>
+
+        <dt class="col-md-3 col-5 text-key">Birthday</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.Birthday</dd>
+
+        <dt class="col-md-3 col-5 text-key">National Id</dt>
+        <dd class="col-md-9 col-6 text-value">@Model.Customer.NationalId</dd>
+    </dl>
+
+
+
+
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Account-ID
+                </th>
+                <th>
+                    Created Date
+                </th>
+                <th>
+                    Balance
+                </th>
+                <th></th>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach (var item in Model.Customer.Accounts)
+                {
+                    <td>
+                        @item.AccountId
+                    </td>
+                    <td>
+                        @item.Created
+                    </td>
+                    <td>
+                        @item.Balance
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-page="/Customers/Customer" asp-route-accountId="@item.AccountId">View</a>
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+
+</div>

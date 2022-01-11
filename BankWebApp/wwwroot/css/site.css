@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.text-key {
+    font-size: 1.2em;
+}
+
+.text-value {
+    font-size: 1.2em;
+}
