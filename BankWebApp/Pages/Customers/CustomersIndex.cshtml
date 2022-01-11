@@ -5,14 +5,22 @@
     int BelowCurrentPage = 3;
 }
 
-<div class="container mt-5 pt-5">
+<div class="container white-widget mt-5">
 
-    <h3 class="mt-5 pt-5">Sidan @Model.CurrentPage av @Model.PageCount</h3>
-    <form method="GET">
-        <input asp-for="@Model.SearchWord" />
-        <input class="btn btn-primary" type="submit" value="Sök" />
-    </form>
-
+    <div class="row">
+        <div class="col-md-4">
+            <form method="GET">
+                <div class="search-box">
+                    <button class="btn-search"><i class="fas fa-search"></i></button>
+                    <input input asp-for="@Model.SearchWord" class="input-search" placeholder="Type to Search...">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center pt-1">Sidan @Model.CurrentPage av @Model.PageCount</h3>
+        </div>
+        
+    </div>
     <table class="table table-hover mt-5 mb-2">
         <thead>
             <tr>
@@ -112,7 +120,7 @@
                asp-route-sortOrder="@Model.SortOrder">
                         @i
                     </a>
-                } 
+                }
             }
         </div>
         <!--   Div för sista next   -->
