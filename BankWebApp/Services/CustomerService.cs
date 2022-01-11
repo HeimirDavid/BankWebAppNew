@@ -27,7 +27,7 @@ namespace BankWebApp.Services
 
             if (!string.IsNullOrEmpty(searchWord))
             {
-                query = query.Where(c => c.Givenname.Contains(searchWord) || c.City.Contains(searchWord));
+                query = query.Where(c => c.Givenname.Contains(searchWord) || c.City.Contains(searchWord) || Convert.ToString(c.CustomerId).Contains(searchWord));
             }
 
             if (string.IsNullOrEmpty(sortColumn))

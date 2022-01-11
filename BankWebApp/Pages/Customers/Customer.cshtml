@@ -29,6 +29,7 @@
 
 
 <div class="container white-widget pb-1 mt-5">
+    
     <h2 class="mt-3 pb-3 pl-2-rem">Customer Page - @Model.Customer.Givenname</h2>
 
     <hr class="mt-4" />
@@ -106,7 +107,7 @@
                         @item.Balance
                     </td>
                     <td>
-                        <a class="btn btn-primary" asp-page="/Customers/Customer" asp-route-accountId="@item.AccountId">View</a>
+                        <a class="btn btn-primary" asp-page="/Customers/Account" asp-route-accountId="@item.AccountId" asp-route-customerId="@Model.Customer.Id">View</a>
                     </td>
                 }
             </tr>
