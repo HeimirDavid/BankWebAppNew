@@ -92,6 +92,8 @@
                     Balance
                 </th class="text-key">
                 <th></th>
+                <th></th>
+                <th></th>
         </thead>
         <tbody>
             <tr>
@@ -105,6 +107,12 @@
                     </td>
                     <td>
                         @item.Balance
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-page="/Transactions/Deposit" asp-route-accountId="@item.AccountId">Deposit</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-page="/Transactions/Withdraw" asp-route-accountId="@item.AccountId" asp-route-customerId="@Model.Customer.Id">Withdraw</a>
                     </td>
                     <td>
                         <a class="btn btn-primary" asp-page="/Customers/Account" asp-route-accountId="@item.AccountId" asp-route-customerId="@Model.Customer.Id">View</a>
