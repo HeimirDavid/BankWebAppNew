@@ -11,5 +11,18 @@ namespace BankWebApp.Services
         IEnumerable<Transaction> GetThisWeek();
         IEnumerable<Transaction> GetLastWeek();
         IEnumerable<Transaction> GetAll();
+
+        public enum TransactionError
+        {
+            Ok,
+            BalanceTooLow,
+            AmountTooHigh,
+            InvalidAccount,
+            InvalidDate,
+        }
+
+        TransactionError Deposit(int AccountIId, decimal Amount);
+        TransactionError Withdraw(int AccountIId, decimal Amount);
+
     }
 }

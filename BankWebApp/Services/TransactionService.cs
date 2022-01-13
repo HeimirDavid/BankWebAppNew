@@ -1,5 +1,6 @@
 ﻿using BankWebApp.Models;
 using System.Globalization;
+using static BankWebApp.Services.ITransactionService;
 
 namespace BankWebApp.Services
 {
@@ -11,6 +12,7 @@ namespace BankWebApp.Services
 
         DateTime date1 = new DateTime(2013, 1, 15);
 
+        public decimal AmountTooHigh { get; set; } = 15000;
 
         enum Season
         {
@@ -91,5 +93,52 @@ namespace BankWebApp.Services
 
             return query;
         }
+
+        //Overloaded functions - Deposit. One takes a datetime and one does not.
+        public TransactionError Deposit(int AccountId, decimal Amount)
+        {
+            var account = _context.Accounts.First(a => a.AccountId == AccountId);
+            if (account == null)
+                return TransactionError.InvalidAccount;
+
+            if (Amount > AmountTooHigh)
+            {
+                return TransactionError.AmountTooHigh;
+            }
+
+            account.Balance += Amount;
+            _context.Accounts.Update(account);
+            _context.SaveChanges();
+            return TransactionError.Ok;
+        }
+
+        public TransactionError Deposit(int AccountId, decimal Amount, DateTime DateWhen)
+        {
+            var account = _context.Accounts.First(a => a.AccountId == AccountId);
+            if (account == null)
+                return TransactionError.InvalidAccount;
+
+            if (Amount > AmountTooHigh)
+            {
+                return TransactionError.AmountTooHigh;
+            }
+            if (DateWhen < DateTime.Now.AddDays(1).Date)  //2022-01-11 00:00
+            {
+                return TransactionError.InvalidDate;
+            }
+
+            account.Balance += Amount;
+            _context.Accounts.Update(account);
+            _context.SaveChanges();
+            return TransactionError.Ok;
+
+
+        }
+
+        public TransactionError Withdraw(int AccountId, decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
