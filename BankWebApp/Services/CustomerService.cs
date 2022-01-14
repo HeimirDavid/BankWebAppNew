@@ -107,6 +107,14 @@ namespace BankWebApp.Services
 
             return Item;
         }
+
+        public Customer GetCustomerWithAccountNo(int accountId)
+        {
+            var query = _context.Dispositions.Include(d => d.Customer).First(d => d.AccountId == accountId);
+            var customer = query.Customer;
+
+            return customer;
+        }
 }
 
 }

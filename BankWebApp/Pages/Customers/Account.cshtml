@@ -43,7 +43,9 @@
                 <th>
                     Amount
                 </th class="text-key">
-                <th></th>
+                <th>
+                    Balance
+                </th class="text-key">
         </thead>
         <tbody>@foreach (var item in Model.AccountAndTransactions.Transactions)
                 {
@@ -62,6 +64,9 @@
                     </td>
                     <td>
                         @item.Amount
+                    </td>
+                    <td>
+                        @item.Balance
                     </td>
                     @*<td>
                         <a class="btn btn-primary" asp-page="/Customers/Account" asp-route-accountId="@item.AccountId" asp-route-customerId="@Model.Customer.Id">View</a>

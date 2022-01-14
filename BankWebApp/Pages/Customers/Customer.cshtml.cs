@@ -8,7 +8,8 @@ namespace BankWebApp.Pages.Customers
     public class CustomerModel : PageModel
     {
         private readonly ICustomerService _customerService;
-
+        public string DepositSuccess { get; set; }
+        public string WithdrawSuccess { get; set; }
         public CustomerModel(ICustomerService customerService)
         {
             _customerService = customerService;
@@ -16,9 +17,17 @@ namespace BankWebApp.Pages.Customers
 
         public CustomerView Customer { get; set; }
 
-        public void OnGet(int customerId)
+        public void OnGet(int customerId, bool deposit, bool withdraw)
         {
             Customer = _customerService.GetCustomer(customerId);
+            if (deposit)
+            {
+                DepositSuccess = "The deposit was successful";
+            }
+            if (withdraw)
+            {
+                DepositSuccess = "The withdraw was successful";
+            }
         }
     }
 }

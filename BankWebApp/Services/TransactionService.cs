@@ -107,6 +107,17 @@ namespace BankWebApp.Services
             }
 
             account.Balance += Amount;
+
+            _context.Transactions.Add(new Transaction
+            {
+                AccountId = account.AccountId,
+                Date = DateTime.Now,
+                Type = "Credit",
+                Operation = "Credit in Cash",
+                Amount = Amount,
+                Balance = account.Balance
+            });
+
             _context.Accounts.Update(account);
             _context.SaveChanges();
             return TransactionError.Ok;
@@ -126,8 +137,18 @@ namespace BankWebApp.Services
             {
                 return TransactionError.InvalidDate;
             }
-
             account.Balance += Amount;
+
+            _context.Transactions.Add(new Transaction
+            {
+                AccountId = account.AccountId,
+                Date = DateWhen,
+                Type = "Credit",
+                Operation = "Credit in Cash",
+                Amount = Amount,
+                Balance = account.Balance
+            });
+
             _context.Accounts.Update(account);
             _context.SaveChanges();
             return TransactionError.Ok;
@@ -135,10 +156,39 @@ namespace BankWebApp.Services
 
         }
 
-        public TransactionError Withdraw(int AccountId, decimal amount)
+        public TransactionError Withdraw(int AccountId, decimal Amount)
         {
-            throw new NotImplementedException();
+            var account = _context.Accounts.First(a => a.AccountId == AccountId);
+            if (account == null)
+                return TransactionError.InvalidAccount;
+
+            if (Amount > AmountTooHigh)
+            {
+                return TransactionError.AmountTooHigh;
+            }
+            if (Amount > account.Balance)
+            {
+                return TransactionError.BalanceTooLow;
+            }
+
+            account.Balance -= Amount;
+
+            _context.Transactions.Add(new Transaction
+            {
+                AccountId = account.AccountId,
+                Date = DateTime.Now,
+                Type = "Debit",
+                Operation = "Withdraw in Cash",
+                Amount = -Amount,
+                Balance = account.Balance
+            });
+
+            _context.Accounts.Update(account);
+            _context.SaveChanges();
+            return TransactionError.Ok;
         }
+
+        
 
     }
 }

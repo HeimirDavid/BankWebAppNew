@@ -11,5 +11,7 @@ namespace BankWebApp.Services
         public PagedResult<Customer> GetAll(int page, string sortColumn, string sortOrder, string searchWord);
 
         public CustomerView GetCustomer(int id);
+
+        public Customer GetCustomerWithAccountNo(int accountId);
     }
 }

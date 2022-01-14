@@ -29,6 +29,18 @@
 
 
 <div class="container white-widget pb-1 mt-5">
+    @if (!String.IsNullOrEmpty(Model.DepositSuccess))
+    {
+        <div class="alert alert-success" role="alert">
+          @Model.DepositSuccess
+        </div>
+    }
+    @if (!String.IsNullOrEmpty(Model.WithdrawSuccess))
+    {
+        <div class="alert alert-success" role="alert">
+          @Model.WithdrawSuccess
+        </div>
+    }
     
     <h2 class="mt-3 pb-3 pl-2-rem">Customer Page - @Model.Customer.Givenname</h2>
 
@@ -123,7 +135,7 @@
     </table>
 
 
-
+    
 
 
 
