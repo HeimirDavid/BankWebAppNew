@@ -115,6 +115,13 @@ namespace BankWebApp.Services
 
             return customer;
         }
-}
+
+        public IEnumerable<Disposition> GetAllDispositions() {
+            var query = _context.Dispositions.Include(d => d.Customer).AsQueryable();
+
+            return query;
+            
+        }
+    }
 
 }

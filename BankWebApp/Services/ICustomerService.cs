@@ -13,5 +13,6 @@ namespace BankWebApp.Services
         public CustomerView GetCustomer(int id);
 
         public Customer GetCustomerWithAccountNo(int accountId);
+        public IEnumerable<Disposition> GetAllDispositions();
     }
 }

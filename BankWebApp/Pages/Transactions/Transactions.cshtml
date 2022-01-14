@@ -3,7 +3,31 @@
 @{
     //Create new transaction here
 }
-<h1>New Transaction</h1>
-<h1>New Transaction</h1>
-<h1>New Transaction</h1>
-<h1>New Transaction</h1>
+<form>
+    <select class="searchableDropDown w-100 pb-2" name="state">
+        @foreach (var item in Model.TransactionsDropDown)
+        {
+
+            <option value="@item.AccountId">
+                @item.AccountId | @item.CustomerName
+            </option>
+
+        }
+    </select>
+</form>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.searchableDropDown').select2();
+        });
+    </script>
+}
