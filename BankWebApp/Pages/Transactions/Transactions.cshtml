@@ -3,31 +3,74 @@
 @{
     //Create new transaction here
 }
-<form>
-    <select class="searchableDropDown w-100 pb-2" name="state">
-        @foreach (var item in Model.TransactionsDropDown)
-        {
 
-            <option value="@item.AccountId">
-                @item.AccountId | @item.CustomerName
-            </option>
+<div class="container white-widget pb-1 mt-5">
+    @if (!String.IsNullOrEmpty(Model.TransactionMessage))
+    {
+        <div class="alert alert-success" role="alert">
+          @Model.TransactionMessage
+        </div>
+    }
+    <form method="post">
+        <div class="row">
+            <div class="col-10 offset-1 text-center my-3">
+                <h2>New Transaction</h2>
+            </div>
+            <div class="col-md-4 offset-md-0 col-10 offset-1">
+                <label class="mb-1" asp-for="AccountNoFrom">From Account:</label>
+                <select required class="searchableDropDown w-100 pb-2" asp-for="AccountNoFrom">
+                    @foreach (var item in Model.TransactionsDropDown)
+                    {
+                        <option value="@item.AccountId">
+                            ID: @item.AccountId | @item.CustomerName
+                        </option>
+                    }
+                </select>
+                <span class="field-validation-error" asp-validation-for="AccountNoFrom"></span>
+            </div>
 
-        }
-    </select>
-</form>
+            <div class="col-md-4 offset-md-0 col-10 offset-1">
+                <label class="mb-1" asp-for="AccountNoTo">To Account:</label>
+                <select required class="searchableDropDown w-100 pb-2" asp-for="AccountNoTo">
+                    @foreach (var item in Model.TransactionsDropDown)
+                    {
+                        <option value="@item.AccountId">
+                           ID: @item.AccountId | @item.CustomerName
+                        </option>
+                    }
+                </select>
+                <span class="field-validation-error" asp-validation-for="AccountNoTo"></span>
+            </div>
+
+            <div class="col-md-4 offset-md-0 col-10 offset-1">
+                <label asp-for="Amount">Amount</label>
+                <input required class="form-control" asp-for="Amount" />
+                <span class="field-validation-error" asp-validation-for="Amount"></span>
+            </div>
+
+            <div class="col-10 offset-1 text-center my-3">
+                <button class="btn btn-success"type="submit">Deposit</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
 
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('.searchableDropDown').select2();
-        });
-    </script>
+<script>
+    $(document).ready(function () {
+        $('.searchableDropDown').select2();
+    });
+</script>
 }

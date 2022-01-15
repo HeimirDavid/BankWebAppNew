@@ -3,9 +3,11 @@ using BankWebApp.Services;
 using BankWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace BankWebApp.Pages.Transactions
 {
+    
     public class TransactionsModel : PageModel
     {
         private readonly ITransactionService _transactionService;
@@ -15,9 +17,19 @@ namespace BankWebApp.Pages.Transactions
             _transactionService = transactionService;
             _customerService = customerService;
         }
-
+        [BindProperty]
+        [Required]
+        [Range(1, 15000)]
+        public decimal Amount { get; set; }
+        [BindProperty]
+        [Required]
+        public int AccountNoFrom { get; set; }
+        [BindProperty]
+        [Required]
+        public int AccountNoTo { get; set; }
+        public string TransactionMessage { get; set; }
         public List<TransactionDropdown> TransactionsDropDown { get; set; }
-        public void OnGet()
+        public void OnGet(bool TransactionSuccess)
         {
             var Dispositions = _customerService.GetAllDispositions();
 
@@ -31,26 +43,66 @@ namespace BankWebApp.Pages.Transactions
                     CustomerName = dis.Customer.Givenname,
                 });
             }
+            if (TransactionSuccess)
+            {
+                TransactionMessage = "Transfer was successful!";
+            }
         }
 
-        public IActionResult OnPost(int accountId, decimal amount)
+        public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                var status = _transactionService.Withdraw(accountId, amount);
-                if (status == ITransactionService.TransactionError.Ok)
+                bool depositSuccessful = false;
+                bool withdrawSuccessful = false;
+
+                var statusDeposit = _transactionService.Deposit(AccountNoTo, Amount);
+                if (statusDeposit == ITransactionService.TransactionError.Ok)
                 {
-                    return RedirectToPage("Index");
+                    depositSuccessful = true;
                 }
-                else if (status == ITransactionService.TransactionError.BalanceTooLow)
+                else if (statusDeposit == ITransactionService.TransactionError.AmountTooHigh)
                 {
-                    ModelState.AddModelError("Amount", "Error with the amount");
+                    ModelState.AddModelError("Amount", "AmountToHigh");
                     return Page();
                 }
-                else if (status == ITransactionService.TransactionError.InvalidAccount)
+                else if (statusDeposit == ITransactionService.TransactionError.InvalidAccount)
                 {
                     ModelState.AddModelError("Account", "Invalid Account");
                     return Page();
+                }
+                else if (statusDeposit == ITransactionService.TransactionError.InvalidDate)
+                {
+                    ModelState.AddModelError("DateWhen", "Date must be tomorrow or after");
+                    return Page();
+                }
+
+                var statusWirhdraw = _transactionService.Withdraw(AccountNoFrom, Amount);
+                if (statusWirhdraw == ITransactionService.TransactionError.Ok)
+                {
+                    withdrawSuccessful = true;
+                }
+                else if (statusWirhdraw == ITransactionService.TransactionError.AmountTooHigh)
+                {
+                    ModelState.AddModelError("Amount", "AmountToHigh");
+                    return Page();
+                }
+                else if (statusWirhdraw == ITransactionService.TransactionError.InvalidAccount)
+                {
+                    ModelState.AddModelError("Account", "Invalid Account");
+                    return Page();
+                }
+                else if (statusWirhdraw == ITransactionService.TransactionError.BalanceTooLow)
+                {
+                    ModelState.AddModelError("Amount", "Not enough balance");
+                    return Page();
+                }
+
+
+
+                if (depositSuccessful && withdrawSuccessful)
+                {
+                    return RedirectToPage("../Transactions/Transactions", new { TransactionSuccess = true });
                 }
 
             }
