@@ -137,6 +137,7 @@ namespace BankWebApp.Services
             {
                 return TransactionError.InvalidDate;
             }
+
             account.Balance += Amount;
 
             _context.Transactions.Add(new Transaction
@@ -152,8 +153,6 @@ namespace BankWebApp.Services
             _context.Accounts.Update(account);
             _context.SaveChanges();
             return TransactionError.Ok;
-
-
         }
 
         public TransactionError Withdraw(int AccountId, decimal Amount)
