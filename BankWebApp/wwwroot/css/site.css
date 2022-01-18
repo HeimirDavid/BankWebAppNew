@@ -29,6 +29,10 @@ body {
     font-size: 1.2em;
 }
 
+.text-size {
+    font-size: 1.1em;
+}
+
 .table thead th.text-key {
     font-size: 16px;
 }

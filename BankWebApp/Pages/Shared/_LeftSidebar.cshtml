@@ -1,5 +1,15 @@
-﻿<nav class="sidebar sidebar-offcanvas" id="sidebar">
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
+
+
+        
+
+
         <li class="nav-item">
             <a class="nav-link" asp-page="../Index">
                 <i class="mdi mdi-grid-large menu-icon"></i>
@@ -72,6 +82,24 @@
                 </ul>
             </div>
         </li>
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li class="nav-item d-lg-none d-md-block">
+                <a id="manage" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
+            </li>
+            <li class="nav-item d-lg-none d-md-block">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                    <button id="logout" type="submit" class="btn btn-warning">Logout</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item d-lg-none d-md-block">
+                <a class="btn btn-success login-btn" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
+        }
         <li class="nav-item nav-category">pages</li>
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">

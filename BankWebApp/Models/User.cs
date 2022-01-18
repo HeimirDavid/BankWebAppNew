@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace BankWebApp.Models
 {
-    public partial class User
+    public partial class User /*: IdentityUser*/
     {
         public int UserId { get; set; }
         public string LoginName { get; set; } = null!;
