@@ -6,10 +6,6 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
 
-
-        
-
-
         <li class="nav-item">
             <a class="nav-link" asp-page="../Index">
                 <i class="mdi mdi-grid-large menu-icon"></i>
@@ -100,15 +96,16 @@
                 <a class="btn btn-success login-btn" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
             </li>
         }
-        <li class="nav-item nav-category">pages</li>
+        <li class="nav-item nav-category">Users</li>
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
                 <i class="menu-icon mdi mdi-account-circle-outline"></i>
-                <span class="menu-title">User Pages</span>
+                <span class="menu-title">User Actions</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="auth">
                 <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register"> Register </a></li>
                     <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
                 </ul>
             </div>

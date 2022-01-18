@@ -1,13 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@ViewData["Title"] - BankWebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BankWebApp.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BankWebApp.styles.css" asp-append-version="true" />
+    
 
     <!-- SELECT2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -38,6 +41,13 @@
     <!-- CDN FOR FONTAWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BankWebApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BankWebApp.styles.css" asp-append-version="true" />
+
+
     <style>
         /*select 2*/
         .select2-selection__rendered {
@@ -52,8 +62,6 @@
             height: 40px !important;
         }
 
-
-       
     </style>
 
 
@@ -87,9 +95,12 @@
     <main role="main" class="pb-3">
         <div class="container-fluid page-body-wrapper">
 
-            <partial name="_SettingsPanel" />
-            <partial name="_RightSidebar" />
-            <partial name="_LeftSidebar" />
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <partial name="_SettingsPanel" />
+                <partial name="_RightSidebar" />
+                <partial name="_LeftSidebar" />
+            }
             @RenderBody()
         </div>
     </main>
