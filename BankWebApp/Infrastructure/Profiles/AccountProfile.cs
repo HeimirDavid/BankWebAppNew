@@ -9,6 +9,9 @@ namespace BankWebApp.Infrastructure.Profiles
             CreateMap<Models.Account, BankWebApp.ViewModels.AccountTransactionsView>()
                 .ForMember(dest => dest.Transactions, opt => opt.Ignore());
 
+            CreateMap<Models.Transaction, BankWebApp.ViewModels.TransactionViewModel>();
+                
+
         }
         
     }

@@ -23,40 +23,13 @@ namespace BankWebApp.Pages.Customers
             Account = _accountService.GetAccount(accountId, customerId);
         }
 
-        public IActionResult OnGetFetchMore(int accountId, int page)
+        public IActionResult OnGetFetchMore(int accountId, int pageNo)
         {
-            //DateTime dateOfLastShown = new DateTime(lastTicks).AddMilliseconds(100);
+  
+            var transactions = _accountService.GetAllTransactions(accountId, pageNo);
 
-            var transactions = _accountService.GetAllTransactions(accountId, page);
+            return new JsonResult(new { items = transactions, pageNo });
 
-            //if (transactions.Any())
-            //{
-            //    lastTicks = transactions.Last().Date.Ticks;
-            //}
-
-            return new JsonResult(new { items = transactions, page });
-            //var list = _context.Person
-            //    .Where(e => e.Id == personId)
-            //    .SelectMany(e => e.OwnedCars)
-            //    .Where(d => lastTicks == 0 || d.BoughtDate > dateOfLastShown)
-            //    .OrderBy(e => e.BoughtDate)
-            //    .Take(5)
-            //    .Select(e => new Item
-            //    {
-            //        BoughtDate = e.BoughtDate,
-            //        Id = e.Id,
-            //        Model = e.Model,
-            //        Fuel = e.Fuel,
-            //        Manufacturer = e.Manufacturer,
-            //        Type = e.Type,
-            //        Vin = e.Vin
-
-
-            //    }).ToList();
-
-            //if (list.Any())
-            //    lastTicks = list.Last().BoughtDate.Ticks;
-            //return new JsonResult(new { items = list, lastTicks });
         }
     }
 }

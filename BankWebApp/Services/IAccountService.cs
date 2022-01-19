@@ -10,6 +10,6 @@ namespace BankWebApp.Services
 
         public AccountTransactionsView GetAccountAndTransactions(int accountId, int customerId, long lastTicks);
         public AccountViewModel GetAccount(int accountId, int customerId);
-        public PagedResult<Transaction> GetAllTransactions(int accountId, int page);
+        public IEnumerable<TransactionViewModel> GetAllTransactions(int accountId, int pageNo);
     }
 }

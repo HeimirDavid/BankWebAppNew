@@ -22,6 +22,7 @@ namespace BankWebApp.Services
             return numberOfAccounts;
         }
 
+        /* NOT IN USE ANYMORE */
         public AccountTransactionsView GetAccountAndTransactions(int accountId, int customerId, long lastTicks)
         {
             DateTime dateOfLastShown = new DateTime(lastTicks).AddMilliseconds(100);
@@ -37,16 +38,6 @@ namespace BankWebApp.Services
                 .Where(t => lastTicks == 0 || t.Date > dateOfLastShown)
                 .Take(5)
                 .OrderByDescending(t => t.Date);
-
-
-
-            //{
-            //    Givenname = CustomerQuery.Givenname,
-            //    AccountId = query.AccountId,
-            //    Created = query.Created,
-            //    Balance = query.Balance,
-            //    Transactions = query.Transactions.OrderByDescending(t => t.Date),
-            //};
 
             return Item;
         }
@@ -70,20 +61,17 @@ namespace BankWebApp.Services
             return Item;
         }
 
-        public PagedResult<Transaction> GetAllTransactions(int accountId, int page)
+        public IEnumerable<TransactionViewModel> GetAllTransactions(int accountId, int pageNo)
         {
-            //DateTime dateOfLastShown = new DateTime(lastTicks).AddMilliseconds(100);
-
 
             var transactions = _context.Transactions
                 .Where(t => t.AccountId == accountId)
-                //.Where(t => lastTicks == 0 || t.Date > dateOfLastShown)
                 .OrderByDescending(e => e.Date)
-                .GetPaged(page, 20);
+                .GetPaged(pageNo, 20).Results;
 
+            var items = _mapper.Map<IEnumerable<TransactionViewModel>>(transactions);
 
-
-            return transactions;
+            return items;
         }
 
 

@@ -32,6 +32,9 @@
                     Account-ID
                 </th>
                 <th class="text-key">
+                    Transaction-ID
+                </th>
+                <th class="text-key">
                     Date
                 </th>
                 <th>
@@ -87,12 +90,12 @@
 @section Scripts
 {
     <script type="text/javascript">
-        page = 1;
+        pageNo = 1;
         function fetchMore() {
-            fetch("Account?handler=FetchMore&page=" + page + "&accountId=@Model.Account.AccountId")
+            fetch("Account?handler=FetchMore&pageNo=" + pageNo + "&accountId=@Model.Account.AccountId")
                 .then((response) => response.json())
                 .then((result) => {
-                        lastTicks = result.lastTicks;
+                        pageNo = pageNo++;
                         result.items.forEach(i => tableElements(i));
                     }
                 );
@@ -103,6 +106,7 @@
             document.querySelector('#transactions_posts tbody').innerHTML +=
                 `<tr>
                     <td>${item.accountId}</td>
+                    <td>${item.transactionId}</td>
                     <td>${item.date}</td>
                     <td>${item.type}</td>
                     <td>${item.operation}</td>
