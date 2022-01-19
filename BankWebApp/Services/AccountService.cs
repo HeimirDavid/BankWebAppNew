@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BankWebApp.Infrastructure.Paging;
 using BankWebApp.Models;
 using BankWebApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -69,16 +70,18 @@ namespace BankWebApp.Services
             return Item;
         }
 
-        public IEnumerable<Transaction> GetAllTransactions(int accountId, long lastTicks)
+        public PagedResult<Transaction> GetAllTransactions(int accountId, int page)
         {
-            DateTime dateOfLastShown = new DateTime(lastTicks).AddMilliseconds(100);
+            //DateTime dateOfLastShown = new DateTime(lastTicks).AddMilliseconds(100);
 
 
             var transactions = _context.Transactions
                 .Where(t => t.AccountId == accountId)
-                .Where(t => lastTicks == 0 || t.Date > dateOfLastShown)
+                //.Where(t => lastTicks == 0 || t.Date > dateOfLastShown)
                 .OrderByDescending(e => e.Date)
-                .Take(5);
+                .GetPaged(page, 20);
+
+
 
             return transactions;
         }

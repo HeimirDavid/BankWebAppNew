@@ -87,9 +87,9 @@
 @section Scripts
 {
     <script type="text/javascript">
-        lastTicks = 0;
+        page = 1;
         function fetchMore() {
-            fetch("Account?handler=FetchMore&lastTicks=" + lastTicks + "&accountId=@Model.Account.AccountId")
+            fetch("Account?handler=FetchMore&page=" + page + "&accountId=@Model.Account.AccountId")
                 .then((response) => response.json())
                 .then((result) => {
                         lastTicks = result.lastTicks;
