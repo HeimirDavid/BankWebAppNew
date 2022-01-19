@@ -16,7 +16,6 @@ namespace BankWebApp.Pages.Customers
             _accountService = accountService;
         }
 
-        public AccountTransactionsView AccountAndTransactions { get; set; }
         public AccountViewModel Account { get; set; }
         public void OnGet(int accountId, int customerId)
         {

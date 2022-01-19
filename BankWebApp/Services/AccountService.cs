@@ -22,26 +22,6 @@ namespace BankWebApp.Services
             return numberOfAccounts;
         }
 
-        /* NOT IN USE ANYMORE */
-        public AccountTransactionsView GetAccountAndTransactions(int accountId, int customerId, long lastTicks)
-        {
-            DateTime dateOfLastShown = new DateTime(lastTicks).AddMilliseconds(100);
-
-            var query = _context.Accounts
-                .Include(a => a.Transactions)
-                .First(a => a.AccountId == accountId);
-
-            var CustomerQuery = _context.Customers.First(c => c.CustomerId == customerId);
-            var Item = _mapper.Map<AccountTransactionsView>(query);
-            Item.Givenname = CustomerQuery.Givenname;
-            Item.Transactions = query.Transactions
-                .Where(t => lastTicks == 0 || t.Date > dateOfLastShown)
-                .Take(5)
-                .OrderByDescending(t => t.Date);
-
-            return Item;
-        }
-
         public AccountViewModel GetAccount(int accountId, int customerId)
         {
             var query = _context.Accounts
