@@ -7,25 +7,25 @@
 
 <div class="container">
     <div class="white-widget pb-1 mt-5">
-    <h2 class="mt-3 pb-3 pl-2-rem">Transactions - @Model.AccountAndTransactions.CustomerName</h2>
+    <h2 class="mt-3 pb-3 pl-2-rem">Transactions - @Model.Account.Givenname</h2>
 
     <hr class="mt-4" />
     <dl class="row mt-2 pl-2">
         <dt class="col-md-3 col-5 text-key">Account No</dt>
-        <dd class="col-md-9 col-6 text-value">@Model.AccountAndTransactions.AccountId</dd>
+        <dd class="col-md-9 col-6 text-value">@Model.Account.AccountId</dd>
 
         <dt class="col-md-3 col-5 text-key">Created Date</dt>
-        <dd class="col-md-9 col-6 text-value">@Model.AccountAndTransactions.Created</dd>
+        <dd class="col-md-9 col-6 text-value">@Model.Account.Created</dd>
 
         <dt class="col-md-3 col-5 text-key">Balance</dt>
-        <dd class="col-md-9 col-6 text-value">@Model.AccountAndTransactions.Balance</dd>
+        <dd class="col-md-9 col-6 text-value">@Model.Account.Balance</dd>
 
 
     </dl>
 </div>
 
 <div class="white-widget pb-1 mt-5">
-    <table class="table table-hover">
+    <table class="table table-hover" id="transactions_posts">
         <thead>
             <tr>
                 <th class="text-key">
@@ -47,7 +47,8 @@
                     Balance
                 </th class="text-key">
         </thead>
-        <tbody>@foreach (var item in Model.AccountAndTransactions.Transactions)
+        
+        @*<tbody>@foreach (var item in Model.AccountAndTransactions.Transactions)
                 {
                 <tr>
                     <td>
@@ -68,13 +69,53 @@
                     <td>
                         @item.Balance
                     </td>
-                    @*<td>
+                    <td>
                         <a class="btn btn-primary" asp-page="/Customers/Account" asp-route-accountId="@item.AccountId" asp-route-customerId="@Model.Customer.Id">View</a>
-                    </td>*@
+                    </td>
                 </tr>
             }
+        </tbody>*@
+        <tbody>
+
         </tbody>
+
     </table>
+    <a class="btn btn-primary" href="javascript:fetchMore();">See more</a>
 </div>
 </div>
 
+@section Scripts
+{
+    <script type="text/javascript">
+        lastTicks = 0;
+        function fetchMore() {
+            fetch("Account?handler=FetchMore&lastTicks=" + lastTicks + "&accountId=@Model.Account.AccountId")
+                .then((response) => response.json())
+                .then((result) => {
+                        lastTicks = result.lastTicks;
+                        result.items.forEach(i => tableElements(i));
+                    }
+                );
+        }
+
+
+        function tableElements(item) {
+            document.querySelector('#transactions_posts tbody').innerHTML +=
+                `<tr>
+                    <td>${item.accountId}</td>
+                    <td>${item.date}</td>
+                    <td>${item.type}</td>
+                    <td>${item.operation}</td>
+                    <td>${item.amount}</td>
+                    <td>${item.balance}</td> 
+                </tr>`;
+                    }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchMore();
+        });
+
+
+    </script>    
+}

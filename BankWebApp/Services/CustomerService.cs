@@ -73,10 +73,10 @@ namespace BankWebApp.Services
 
             }
 
-
-
             return query.GetPaged(page, 10);
         }
+
+
         public CustomerView GetCustomer(int id)
         {
             var query = _context.Customers.Include(c => c.Dispositions).ThenInclude(d => d.Account).First(c => c.CustomerId == id);

@@ -1,13 +1,10 @@
-﻿using BankWebApp.Models;
-
-namespace BankWebApp.ViewModels
+﻿namespace BankWebApp.ViewModels
 {
-    public class AccountTransactionsView
+    public class AccountViewModel
     {
         public string Givenname { get; set; }
         public int AccountId { get; set; }
         public decimal Balance { get; set; }
         public DateTime Created { get; set; }
-        public IEnumerable<Transaction> Transactions { get; set; }
     }
 }
