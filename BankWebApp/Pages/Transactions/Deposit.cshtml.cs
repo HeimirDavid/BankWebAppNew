@@ -16,7 +16,6 @@ namespace BankWebApp.Pages.Transactions
             _customerService = customerService;
         }
 
-        public DateTime DateWhen { get; set; }
 
         [Range(1, 15000)]
         public decimal Amount { get; set; }
@@ -24,7 +23,6 @@ namespace BankWebApp.Pages.Transactions
 
         public void OnGet(int accountId)
         {
-            DateWhen = DateTime.Now.AddDays(1).Date;
             Amount = 0;
         }
 
@@ -33,7 +31,7 @@ namespace BankWebApp.Pages.Transactions
             if (ModelState.IsValid)
             {
                 var Customer = _customerService.GetCustomerWithAccountNo(accountId);
-                var status = _transactionService.Deposit(accountId, Amount, DateWhen);
+                var status = _transactionService.Deposit(accountId, Amount);
                 if (status == ITransactionService.TransactionError.Ok)
                 {
                     

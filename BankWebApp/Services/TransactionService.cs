@@ -94,7 +94,6 @@ namespace BankWebApp.Services
             return query;
         }
 
-        //Overloaded functions - Deposit. One takes a datetime and one does not.
         public TransactionError Deposit(int AccountId, decimal Amount)
         {
             var account = _context.Accounts.First(a => a.AccountId == AccountId);
@@ -113,39 +112,7 @@ namespace BankWebApp.Services
                 AccountId = account.AccountId,
                 Date = DateTime.Now,
                 Type = "Credit",
-                Operation = "Credit in Cash",
-                Amount = Amount,
-                Balance = account.Balance
-            });
-
-            _context.Accounts.Update(account);
-            _context.SaveChanges();
-            return TransactionError.Ok;
-        }
-
-        public TransactionError Deposit(int AccountId, decimal Amount, DateTime DateWhen)
-        {
-            var account = _context.Accounts.First(a => a.AccountId == AccountId);
-            if (account == null)
-                return TransactionError.InvalidAccount;
-
-            if (Amount > AmountTooHigh)
-            {
-                return TransactionError.AmountTooHigh;
-            }
-            if (DateWhen < DateTime.Now.AddDays(1).Date)  //2022-01-11 00:00
-            {
-                return TransactionError.InvalidDate;
-            }
-
-            account.Balance += Amount;
-
-            _context.Transactions.Add(new Transaction
-            {
-                AccountId = account.AccountId,
-                Date = DateWhen,
-                Type = "Credit",
-                Operation = "Credit in Cash",
+                Operation = "Deposit",
                 Amount = Amount,
                 Balance = account.Balance
             });
@@ -177,7 +144,7 @@ namespace BankWebApp.Services
                 AccountId = account.AccountId,
                 Date = DateTime.Now,
                 Type = "Debit",
-                Operation = "Withdraw in Cash",
+                Operation = "Withdraw",
                 Amount = -Amount,
                 Balance = account.Balance
             });

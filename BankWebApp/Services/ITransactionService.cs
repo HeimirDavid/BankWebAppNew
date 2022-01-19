@@ -22,7 +22,7 @@ namespace BankWebApp.Services
         }
 
         TransactionError Deposit(int AccountIId, decimal Amount);
-        TransactionError Deposit(int AccountIId, decimal Amount, DateTime DateWhen);
+
         TransactionError Withdraw(int AccountIId, decimal Amount);
 
     }

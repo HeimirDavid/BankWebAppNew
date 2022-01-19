@@ -24,6 +24,8 @@ namespace BankWebApp.Pages.Transactions
         [BindProperty]
         [Required]
         public int AccountNoFrom { get; set; }
+        //[NotEqualTo("AccountNoFrom")]
+        // https://stackoverflow.com/questions/8786251/opposite-of-compare-data-annotation-in-net
         [BindProperty]
         [Required]
         public int AccountNoTo { get; set; }
@@ -76,6 +78,7 @@ namespace BankWebApp.Pages.Transactions
                     ModelState.AddModelError("DateWhen", "Date must be tomorrow or after");
                     return Page();
                 }
+
 
                 var statusWirhdraw = _transactionService.Withdraw(AccountNoFrom, Amount);
                 if (statusWirhdraw == ITransactionService.TransactionError.Ok)
