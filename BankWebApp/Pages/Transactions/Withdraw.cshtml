@@ -3,22 +3,6 @@
 @{
 }
 
-@*<form class="pl-1" method="post">
-    <div class="form-group">
-        <label asp-for="Amount">Amount</label>
-        <input class="form-control" asp-for="Amount" />
-        <span class="field-validation-error" asp-validation-for="Amount"></span>
-    </div>
-
-    @*<div class="form-group">
-        <label asp-for="DateWhen">Date for deposit</label>
-        <input class="form-control" asp-for="DateWhen" />
-        <span class="field-validation-error" asp-validation-for="DateWhen"></span>
-        </div>*@
-    @*<button class="btn btn-success" type="submit">Deposit</button>
-</form>*@
-
-
 
 <div class="container white-widget pb-1 mt-5">
     <div class="row">
@@ -29,14 +13,9 @@
                 <div class="form-group">
                     <label asp-for="Amount">Amount</label>
                     <input class="form-control" asp-for="Amount" />
-                    <span class="field-validation-error" asp-validation-for="Amount"></span>
+                    <span class="text-danger" asp-validation-for="Amount"></span>
                 </div>
 
-                @*<div class="form-group">
-                    <label asp-for="DateWhen">Date for deposit</label>
-                    <input class="form-control" asp-for="DateWhen" />
-                    <span class="field-validation-error" asp-validation-for="DateWhen"></span>
-                    </div>*@
                 <button class="btn btn-success mb-4" type="submit">Withdraw</button>
             </form>
         </div>

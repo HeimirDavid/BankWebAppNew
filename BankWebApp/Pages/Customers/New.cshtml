@@ -1,0 +1,100 @@
+﻿@page
+@model BankWebApp.Pages.Customers.NewModel
+@{
+}
+
+<div class="container white-widget pb-1 mt-5">
+
+    <h2 class="mt-3 pb-3">New Customer</h2>
+
+    <hr class="mt-4" />
+
+    <form method="post">
+
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Givenname">First Name</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.Givenname">
+                    <span asp-validation-for="@Model.NewCustomer.Givenname" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Surname">Surname</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.Surname">
+                    <span asp-validation-for="@Model.NewCustomer.Surname" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Emailaddress">Email</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.Emailaddress">
+                    <span asp-validation-for="@Model.NewCustomer.Emailaddress" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Gender">Gender</label>
+                    <select class="form-control" asp-for="@Model.NewCustomer.Gender" asp-items="@Model.GenderList"></select>
+                    <span asp-validation-for="@Model.NewCustomer.Gender" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Birthday">Birthday</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.Birthday" type="date">
+                    <span asp-validation-for="@Model.NewCustomer.Birthday" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.NationalId">National Id</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.NationalId">
+                    <span asp-validation-for="@Model.NewCustomer.NationalId" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Streetaddress">Street Address</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.Streetaddress">
+                    <span asp-validation-for="@Model.NewCustomer.Streetaddress" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.City">City</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.City">
+                    <span asp-validation-for="@Model.NewCustomer.City" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Zipcode">Postal Code</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.Zipcode">
+                    <span asp-validation-for="@Model.NewCustomer.Zipcode" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Country">Country</label>
+                    <select class="form-control" asp-for="@Model.NewCustomer.Country" asp-items="@Model.CountryList"></select>
+                    <span asp-validation-for="@Model.NewCustomer.Country" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Telephonecountrycode">Phone Country Code</label>
+                    <select class="form-control" asp-for="@Model.NewCustomer.Telephonecountrycode" asp-items="@Model.PhoneCode"></select>
+                    <span asp-validation-for="@Model.NewCustomer.Telephonecountrycode" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.NewCustomer.Telephonenumber">Phone Number</label>
+                    <input class="form-control" asp-for="@Model.NewCustomer.Telephonenumber">
+                    <span asp-validation-for="@Model.NewCustomer.Telephonenumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mb-4 mt-2">Create Customer</button>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

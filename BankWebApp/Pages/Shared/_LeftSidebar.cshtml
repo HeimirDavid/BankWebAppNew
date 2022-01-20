@@ -12,6 +12,22 @@
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/Transactions/Transactions">
+                <i class="mdi mdi-grid-large menu-icon"></i>
+                <span class="menu-title">Transactions</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/Customers/CustomersIndex">
+                <i class="mdi mdi-grid-large menu-icon"></i>
+                <span class="menu-title">All Customers</span>
+            </a>
+        </li>
+
+        <li class="nav-item nav-category">Customer operation</li>
+
         @*<li class="nav-item nav-category">Menu</li>*@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
@@ -21,11 +37,8 @@
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" asp-page="/Customers/CustomersIndex">All Customers</a></li>
-
-                    <li class="nav-item"> <a class="nav-link" asp-page="/Transactions/Transactions">Transactions</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-page="/Customers/New">New Customer</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-page="/Transactions/Transactions">Edit Customer</a></li>
                 </ul>
             </div>
         </li>

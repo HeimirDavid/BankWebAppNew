@@ -119,8 +119,50 @@ namespace BankWebApp.Services
         public IEnumerable<Disposition> GetAllDispositions() {
             var query = _context.Dispositions.Include(d => d.Customer).AsQueryable();
 
-            return query;
-            
+            return query; 
+        }
+
+        public void AddCustomer(NewCustomerViewModel customer)
+        {
+            // TODO  mapp using automapper
+            var DBCustomer = new Customer
+            {
+                Gender = customer.Gender,
+                Givenname = customer.Givenname,
+                Surname = customer.Surname,
+                Streetaddress = customer.Streetaddress,
+                City = customer.City,
+                Zipcode = customer.Zipcode,
+                Country = customer.Country,
+                CountryCode = customer.CountryCode,
+                Birthday = customer.Birthday,
+                NationalId = customer.NationalId,
+                Telephonecountrycode = customer.Telephonecountrycode,
+                Telephonenumber = customer.Telephonenumber,
+                Emailaddress = customer.Emailaddress,
+            };
+
+            _context.Customers.Add(DBCustomer);
+
+            var Account = new Account
+            {
+                Frequency = "Monthly",
+                Created = DateTime.Now,
+                Balance = 0,
+            };
+
+            _context.Accounts.Add(Account);
+
+            var Disposition = new Disposition
+            {
+                Customer = DBCustomer,
+                Account = Account,
+                Type = "OWNER",
+            };
+
+            _context.Dispositions.Add(Disposition);
+
+            _context.SaveChanges();
         }
     }
 

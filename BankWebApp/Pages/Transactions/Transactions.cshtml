@@ -27,7 +27,7 @@
                         </option>
                     }
                 </select>
-                <span class="field-validation-error" asp-validation-for="AccountNoFrom"></span>
+                <span class="text-danger" asp-validation-for="AccountNoFrom"></span>
             </div>
 
             <div class="col-md-4 offset-md-0 col-10 offset-1">
@@ -41,13 +41,13 @@
                         </option>
                     }
                 </select>
-                <span class="field-validation-error" asp-validation-for="AccountNoTo"></span>
+                <span class="text-danger" asp-validation-for="AccountNoTo"></span>
             </div>
 
             <div class="col-md-4 offset-md-0 col-10 offset-1">
                 <label asp-for="Amount">Amount</label>
                 <input required class="form-control" asp-for="Amount" />
-                <span class="field-validation-error" asp-validation-for="Amount"></span>
+                <span class="text-danger" asp-validation-for="Amount"></span>
             </div>
 
             <div class="col-10 offset-1 text-center my-3">

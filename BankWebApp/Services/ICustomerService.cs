@@ -14,5 +14,7 @@ namespace BankWebApp.Services
 
         public Customer GetCustomerWithAccountNo(int accountId);
         public IEnumerable<Disposition> GetAllDispositions();
+
+        public void AddCustomer(NewCustomerViewModel customer);
     }
 }
