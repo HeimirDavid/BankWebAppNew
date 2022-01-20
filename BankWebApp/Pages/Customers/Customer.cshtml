@@ -121,7 +121,7 @@
                         @item.Balance
                     </td>
                     <td>
-                        <a class="btn btn-primary" asp-page="/Transactions/Deposit" asp-route-accountId="@item.AccountId">Deposit</a>
+                        <a class="btn btn-primary" asp-page="/Transactions/Deposit" asp-route-accountId="@item.AccountId" asp-route-customerId="@Model.Customer.Id">Deposit</a>
                     </td>
                     <td>
                         <a class="btn btn-primary" asp-page="/Transactions/Withdraw" asp-route-accountId="@item.AccountId" asp-route-customerId="@Model.Customer.Id">Withdraw</a>

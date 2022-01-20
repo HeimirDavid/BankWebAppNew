@@ -35,16 +35,8 @@ namespace BankWebApp.Pages.Transactions
         {
             var Dispositions = _customerService.GetAllDispositions();
 
-            TransactionsDropDown = new List<TransactionDropdown>();
+            TransactionsDropDown = FillDropdownWithAccounts();
 
-            foreach (var dis in Dispositions)
-            {
-                TransactionsDropDown.Add(new TransactionDropdown
-                {
-                    AccountId = dis.AccountId,
-                    CustomerName = dis.Customer.Givenname,
-                });
-            }
             if (TransactionSuccess)
             {
                 TransactionMessage = "Transfer was successful!";
@@ -53,10 +45,21 @@ namespace BankWebApp.Pages.Transactions
 
         public IActionResult OnPost()
         {
+
+            TransactionsDropDown = FillDropdownWithAccounts();
+
             if (ModelState.IsValid)
             {
                 bool depositSuccessful = false;
                 bool withdrawSuccessful = false;
+
+                //Should be changed out later... Following code checking if the two accounts are the same..
+                if (AccountNoTo == AccountNoFrom)
+                {
+                    ModelState.AddModelError("AccountNoFrom", "Can't transfer between the same accounts..");
+                    return Page();
+                }
+
 
                 var statusDeposit = _transactionService.Deposit(AccountNoTo, Amount);
                 if (statusDeposit == ITransactionService.TransactionError.Ok)
@@ -70,7 +73,7 @@ namespace BankWebApp.Pages.Transactions
                 }
                 else if (statusDeposit == ITransactionService.TransactionError.InvalidAccount)
                 {
-                    ModelState.AddModelError("Account", "Invalid Account");
+                    ModelState.AddModelError("AccountNoFrom", "Invalid Account");
                     return Page();
                 }
                 else if (statusDeposit == ITransactionService.TransactionError.InvalidDate)
@@ -92,7 +95,7 @@ namespace BankWebApp.Pages.Transactions
                 }
                 else if (statusWirhdraw == ITransactionService.TransactionError.InvalidAccount)
                 {
-                    ModelState.AddModelError("Account", "Invalid Account");
+                    ModelState.AddModelError("AccountNoTo", "Invalid Account");
                     return Page();
                 }
                 else if (statusWirhdraw == ITransactionService.TransactionError.BalanceTooLow)
@@ -111,6 +114,23 @@ namespace BankWebApp.Pages.Transactions
             }
 
             return Page();
+        }
+
+        public List<TransactionDropdown> FillDropdownWithAccounts()
+        {
+            var Dispositions = _customerService.GetAllDispositions();
+
+            TransactionsDropDown = new List<TransactionDropdown>();
+
+            foreach (var dis in Dispositions)
+            {
+                TransactionsDropDown.Add(new TransactionDropdown
+                {
+                    AccountId = dis.AccountId,
+                    CustomerName = dis.Customer.Givenname,
+                });
+            }
+            return TransactionsDropDown;
         }
     }
 }

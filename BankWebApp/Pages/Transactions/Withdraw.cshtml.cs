@@ -1,34 +1,40 @@
 using BankWebApp.Services;
+using BankWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace BankWebApp.Pages.Transactions
 {
-    [BindProperties]
     public class WithdrawModel : PageModel
     {
         private readonly ITransactionService _transactionService;
         private readonly ICustomerService _customerService;
-        public WithdrawModel(ITransactionService transactionService, ICustomerService customerService)
+        private readonly IAccountService _accountService;
+        public WithdrawModel(ITransactionService transactionService, ICustomerService customerService, IAccountService accountService)
         {
             _transactionService = transactionService;
             _customerService = customerService;
+            _accountService = accountService;
         }
         //public DateTime DateWhen { get; set; }
-
+        [BindProperty]
         [Range(10, 15000)]
         public decimal Amount { get; set; }
 
+        public AccountViewModel Account { get; set; }
 
-        public void OnGet(int accountId)
+        public void OnGet(int accountId, int customerId)
         {
-            //DateWhen = DateTime.Now.AddDays(1).Date;
+            Account = _accountService.GetAccount(accountId, customerId);
             Amount = 0;
         }
 
-        public IActionResult OnPost(int accountId)
+        public IActionResult OnPost(int accountId, int customerId)
         {
+
+            Account = _accountService.GetAccount(accountId, customerId);
+
             if (ModelState.IsValid)
             {
                 var Customer = _customerService.GetCustomerWithAccountNo(accountId);

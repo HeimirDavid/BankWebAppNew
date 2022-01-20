@@ -19,6 +19,7 @@
             <div class="col-md-4 offset-md-0 col-10 offset-1">
                 <label class="mb-1" asp-for="AccountNoFrom">From Account:</label>
                 <select required class="searchableDropDown w-100 pb-2" asp-for="AccountNoFrom">
+                   <option selected>Choose account</option>
                     @foreach (var item in Model.TransactionsDropDown)
                     {
                         <option value="@item.AccountId">
@@ -32,6 +33,7 @@
             <div class="col-md-4 offset-md-0 col-10 offset-1">
                 <label class="mb-1" asp-for="AccountNoTo">To Account:</label>
                 <select required class="searchableDropDown w-100 pb-2" asp-for="AccountNoTo">
+                     <option selected>Choose account</option>
                     @foreach (var item in Model.TransactionsDropDown)
                     {
                         <option value="@item.AccountId">
@@ -49,7 +51,7 @@
             </div>
 
             <div class="col-10 offset-1 text-center my-3">
-                <button class="btn btn-success"type="submit">Deposit</button>
+                <button class="btn btn-success"type="submit">Transfer</button>
             </div>
         </div>
     </form>
