@@ -1,4 +1,5 @@
-﻿using BankWebApp.Infrastructure.Paging;
+﻿using AutoMapper;
+using BankWebApp.Infrastructure.Paging;
 using BankWebApp.Models;
 using BankWebApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,12 @@ namespace BankWebApp.Services
     public class CustomerService : ICustomerService
     {
         private readonly BankContext _context;
+        private readonly IMapper _mapper;
 
-        public CustomerService(BankContext bankContext)
+        public CustomerService(BankContext bankContext, IMapper mapper)
         {
             _context = bankContext;
+            _mapper = mapper;
         }
 
 
@@ -124,23 +127,25 @@ namespace BankWebApp.Services
 
         public void AddCustomer(NewCustomerViewModel customer)
         {
-            // TODO  mapp using automapper
-            var DBCustomer = new Customer
-            {
-                Gender = customer.Gender,
-                Givenname = customer.Givenname,
-                Surname = customer.Surname,
-                Streetaddress = customer.Streetaddress,
-                City = customer.City,
-                Zipcode = customer.Zipcode,
-                Country = customer.Country,
-                CountryCode = customer.CountryCode,
-                Birthday = customer.Birthday,
-                NationalId = customer.NationalId,
-                Telephonecountrycode = customer.Telephonecountrycode,
-                Telephonenumber = customer.Telephonenumber,
-                Emailaddress = customer.Emailaddress,
-            };
+            // mapp using automapper
+            var DBCustomer = _mapper.Map<Customer>(customer);
+
+            //var DBCustomer = new Customer
+            //{
+            //    Gender = customer.Gender,
+            //    Givenname = customer.Givenname,
+            //    Surname = customer.Surname,
+            //    Streetaddress = customer.Streetaddress,
+            //    City = customer.City,
+            //    Zipcode = customer.Zipcode,
+            //    Country = customer.Country,
+            //    CountryCode = customer.CountryCode,
+            //    Birthday = customer.Birthday,
+            //    NationalId = customer.NationalId,
+            //    Telephonecountrycode = customer.Telephonecountrycode,
+            //    Telephonenumber = customer.Telephonenumber,
+            //    Emailaddress = customer.Emailaddress,
+            //};
 
             _context.Customers.Add(DBCustomer);
 
@@ -162,6 +167,14 @@ namespace BankWebApp.Services
 
             _context.Dispositions.Add(Disposition);
 
+            _context.SaveChanges();
+        }
+
+        public void UpdateCustomer(EditCustomerViewModel CustomerWithNewValues)
+        {
+            var customerFromDb = _context.Customers.First(c => c.CustomerId == CustomerWithNewValues.CustomerId);
+
+            _mapper.Map(CustomerWithNewValues, customerFromDb);
             _context.SaveChanges();
         }
     }

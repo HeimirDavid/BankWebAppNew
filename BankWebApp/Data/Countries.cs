@@ -5,13 +5,11 @@
         public static Dictionary<string, string> _Countries = new Dictionary<string, string>
         {
             {  "Choose an option...", "Error" },
-            { "Sverige", "SE" },
-            {  "Danmark", "DK" },
-            {  "Norge", "NO" },
+            { "Sweden", "SE" },
+            {  "Denmark", "DK" },
+            {  "Norway", "NO" },
             {  "Finland", "FI" },
-            {  "Island", "IS" },
-            
-
+            {  "Iceland", "IS" },
         };
 
     }

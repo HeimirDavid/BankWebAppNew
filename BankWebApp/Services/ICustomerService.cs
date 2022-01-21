@@ -16,5 +16,6 @@ namespace BankWebApp.Services
         public IEnumerable<Disposition> GetAllDispositions();
 
         public void AddCustomer(NewCustomerViewModel customer);
+        public void UpdateCustomer(EditCustomerViewModel CustomerWithNewValues);
     }
 }

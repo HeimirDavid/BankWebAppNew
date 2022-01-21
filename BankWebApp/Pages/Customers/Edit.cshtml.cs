@@ -1,86 +1,89 @@
+using AutoMapper;
 using BankWebApp.Data;
 using BankWebApp.Services;
 using BankWebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-
 
 namespace BankWebApp.Pages.Customers
 {
+    [Authorize]
 
-    [BindProperties]
-    public class NewModel : PageModel
+    public class EditModel : PageModel
     {
         private readonly ICustomerService _customerService;
-        public NewModel(ICustomerService customerService)
+        private readonly IMapper _mapper;
+
+        public EditModel(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
+            _mapper = mapper;
         }
-
-        [Required]
-        public NewCustomerViewModel NewCustomer { get; set; }
-
-
-        [Required]
+        [BindProperty]
         public List<SelectListItem> CountryList { get; set; }
+        [BindProperty]
 
-
-        [Required]
         public List<SelectListItem> PhoneCode { get; set; }
+        [BindProperty]
 
-        [Required]
         public List<SelectListItem> GenderList { get; set; }
+        [BindProperty]
 
+        public EditCustomerViewModel CustomerViewModel { get; set; }
 
-        // TODO Chech if necessary
-        [Required]
-        public List<SelectListItem> Gender { get; set; }
-        public void OnGet()
+        public CustomerView CustomerToEdit { get; set; }
+
+        // TODO FIX"!!! Why does CustomerViewModel loose its Id on post???
+        [BindProperty]
+        public int CustomerId { get; set; }
+
+        public void OnGet(int customerId)
         {
             FillCountries();
             FillPhoneCode();
             FillGenderList();
+
+            
+
+            CustomerToEdit = _customerService.GetCustomer(customerId);
+
+            // TODO Fix wtf???
+            var test = _mapper.Map(CustomerToEdit, CustomerViewModel);
+            CustomerViewModel = test;
         }
 
-        public IActionResult OnPost()
+        public void OnPost()
         {
-            FillCountries();
-            FillPhoneCode();
-            FillGenderList();
-
             string Error = "Error";
+            CustomerViewModel.CustomerId = CustomerId;
 
-            if (Countries._Countries[NewCustomer.Country] == Error)
+            if (Countries._Countries[CustomerViewModel.Country] == Error)
             {
                 ModelState.AddModelError("NewCustomer.Country", "Must choose a country");
-            } else
+            }
+            else
             {
-                NewCustomer.CountryCode = Countries._Countries[NewCustomer.Country]; 
+                CustomerViewModel.CountryCode = Countries._Countries[CustomerViewModel.Country];
             }
 
-            if (CountryPhoneCode._Codes[NewCustomer.Telephonecountrycode] == Error)
+            if (CountryPhoneCode._Codes[CustomerViewModel.Telephonecountrycode] == Error)
             {
                 ModelState.AddModelError("NewCustomer.Telephonecountrycode", "Must choose a country code");
             }
 
-            if (GenderDict.Genders[NewCustomer.Gender] == Error)
+            if (GenderDict.Genders[CustomerViewModel.Gender] == Error)
             {
                 ModelState.AddModelError("NewCustomer.Gender", "Must choose a gender");
             }
 
-
-
-
             if (ModelState.IsValid)
             {
-                _customerService.AddCustomer(NewCustomer);
+                _customerService.UpdateCustomer(CustomerViewModel);
             }
 
-
-            return Page();
+            
         }
 
         private void FillCountries()
@@ -90,7 +93,6 @@ namespace BankWebApp.Pages.Customers
                 Text = c,
                 Value = c
             }).ToList();
-            
         }
 
         private void FillPhoneCode()
@@ -100,7 +102,6 @@ namespace BankWebApp.Pages.Customers
                 Text = c,
                 Value = c
             }).ToList();
-            
         }
 
         private void FillGenderList()
@@ -110,31 +111,7 @@ namespace BankWebApp.Pages.Customers
                 Text = c,
                 Value = c
             }).ToList();
-            
+
         }
-
-        //protected void Page_Load()
-
-        //{
-
-        //    CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures);
-
-        //    Response.WriteAsync("<table border=\"1\"><tr><th>Country Name</th><th>Language-Country code</th></tr>");
-
-        //    foreach (CultureInfo cul in cinfo)
-
-        //    {
-
-        //        Response.WriteAsync("<tr>");
-
-        //        Response.WriteAsync("<td>" + cul.DisplayName + " </td><td> " + cul.TwoLetterISOLanguageName + "</td>");
-
-        //        Response.WriteAsync("</tr>");
-
-        //    }
-
-        //    Response.WriteAsync("</table>");
-
-        //}
     }
 }
