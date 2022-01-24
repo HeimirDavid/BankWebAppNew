@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using BankWebApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,25 +24,31 @@ namespace BankWebApp.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly IUserService _userService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
+            IUserService userService,
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
+            RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender)
         {
+            _userService = userService;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            //_roleManager = roleManager;
             _emailSender = emailSender;
         }
 
@@ -50,7 +57,12 @@ namespace BankWebApp.Areas.Identity.Pages.Account
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = new InputModel();
+
+        [BindProperty]
+        [Required]
+        public IEnumerable<IdentityRole> UserRoles { get; set; }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -68,6 +80,13 @@ namespace BankWebApp.Areas.Identity.Pages.Account
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        /// 
+
+        //public class InputModelUserRoles
+        //{
+        //    public IdentityRole AdminRole { get; set; } = ;
+        //    public IdentityRole CashierRole { get; set; } = "cashier";
+        //}
         public class InputModel
         {
             /// <summary>
@@ -89,6 +108,8 @@ namespace BankWebApp.Areas.Identity.Pages.Account
             [Display(Name = "Password")]
             public string Password { get; set; }
 
+            
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -97,11 +118,18 @@ namespace BankWebApp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public IEnumerable<IdentityRole> UserRoles { get; set; }
+            public List<string> UserRolesString { get; set; } = new List<string>();
+
+
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            Input.UserRoles = _userService.GetRoles();
+            //UserRoles = roles;
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -121,6 +149,18 @@ namespace BankWebApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    for (int i = 0; i < Input.UserRolesString.Count(); i++)
+                    {
+                        //var role = _roleManager.FindByNameAsync(Input.UserRolesString[i]);
+                        await _userManager.AddToRoleAsync(user, Input.UserRolesString[i]);
+                    }
+
+                    //Input.UserRoles.ToList().ForEach(r =>
+                    //{
+                    //    await _userManager.AddToRoleAsync(user, r);
+                    //});
+
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

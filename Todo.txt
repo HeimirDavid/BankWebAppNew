@@ -3,3 +3,9 @@
 * Create new USERS, give a choice of what roles to give them.
 * Update USERS, including changing roles.
 * 
+
+VG ->
+¨Register new customer.
+Choose role (s)
+Redirect to same page, not confirm account
+Send successmessage.

@@ -32,6 +32,18 @@
                     </div>
 
 
+                    @foreach (var role in Model.Input.UserRoles)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="@role.Name" id="@role.Id" name="Input.UserRolesString">
+                            <label class="form-check-label" for="@role.Id">
+                                @role.Name
+                            </label>
+                        </div>
+                    }
+
+
+
                     <button id="registerSubmit" type="submit" class="btn btn-lg btn-primary mt-4 mb-4">Register</button>
                 </form>
             </div>

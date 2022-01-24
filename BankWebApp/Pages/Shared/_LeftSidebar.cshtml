@@ -42,6 +42,39 @@
                 </ul>
             </div>
         </li>
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li class="nav-item d-lg-none d-md-block">
+                <a id="manage" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
+            </li>
+            <li class="nav-item d-lg-none d-md-block">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                    <button id="logout" type="submit" class="btn btn-warning">Logout</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item d-lg-none d-md-block">
+                <a class="btn btn-success login-btn" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
+        }
+        <li class="nav-item nav-category">Users</li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="menu-icon mdi mdi-account-circle-outline"></i>
+                <span class="menu-title">User Actions</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register"> Register </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+                </ul>
+            </div>
+        </li>
+
         <li class="nav-item nav-category">Forms and Datas</li>
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
@@ -92,37 +125,7 @@
             </div>
         </li>
 
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <li class="nav-item d-lg-none d-md-block">
-                <a id="manage" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
-            </li>
-            <li class="nav-item d-lg-none d-md-block">
-                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                    <button id="logout" type="submit" class="btn btn-warning">Logout</button>
-                </form>
-            </li>
-        }
-        else
-        {
-            <li class="nav-item d-lg-none d-md-block">
-                <a class="btn btn-success login-btn" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-            </li>
-        }
-        <li class="nav-item nav-category">Users</li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-                <i class="menu-icon mdi mdi-account-circle-outline"></i>
-                <span class="menu-title">User Actions</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register"> Register </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                </ul>
-            </div>
-        </li>
+        
         <li class="nav-item nav-category">help</li>
         <li class="nav-item">
             <a class="nav-link" href="http://bootstrapdash.com/demo/star-admin2-free/docs/documentation.html">
