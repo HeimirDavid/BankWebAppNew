@@ -1,4 +1,6 @@
-﻿using BankWebApp.Models;
+﻿using BankWebApp.Infrastructure.Paging;
+using BankWebApp.Models;
+using BankWebApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace BankWebApp.Services
@@ -8,5 +10,10 @@ namespace BankWebApp.Services
         IEnumerable<User> GetUsers();
 
         IEnumerable<IdentityRole> GetRoles();
+
+        public PagedResult<IdentityUser> GetAll(int page, string sortColumn, string sortOrder, string searchWord);
+
+        public IEnumerable<UsersViewModel> GetAllUsersWithRoles(int page, string sortColumn, string sortOrder, string searchWord);
+
     }
 }

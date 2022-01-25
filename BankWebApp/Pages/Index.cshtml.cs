@@ -69,11 +69,11 @@ namespace BankWebApp.Pages
             NumberOfAccounts = _accountService.NumberOfAllAccounts();
             TotalOfAllAccounts = _saldoService.TotalOfAllSaldo();
 
-            Users = query.Select(u => new IndexUser
-            {
-                Id = u.UserId,
-                Username = u.LoginName,
-            }).Take(5).ToList();
+            //Users = query.Select(u => new IndexUser
+            //{
+            //    Id = u.UserId,
+            //    Username = u.LoginName,
+            //}).Take(5).ToList();
 
 
         }

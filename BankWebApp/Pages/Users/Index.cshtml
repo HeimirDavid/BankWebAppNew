@@ -1,0 +1,149 @@
+﻿@page
+@model BankWebApp.Pages.Users.IndexModel
+@{
+}
+
+@{
+    int AboveCurrentPage = 4;
+    int BelowCurrentPage = 3;
+}
+
+<div class="container white-widget mt-5">
+
+    <div class="row">
+        <div class="col-md-4">
+            <form method="GET">
+                <div class="search-box">
+                    <button class="btn-search"><i class="fas fa-search"></i></button>
+                    <input input asp-for="@Model.SearchWord" class="input-search" placeholder="Type to Search...">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center pt-1">Sidan @Model.CurrentPage av @Model.PageCount</h3>
+        </div>
+        
+    </div>
+    <table class="table table-hover mt-5 mb-2">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                    <a asp-page="/Users/Index" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="UserId" asp-route-sortOrder="asc">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
+                    <a asp-page="/Users/Index" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="UserId" asp-route-sortOrder="desc">
+                        <i class="fas fa-angle-down"></i>
+                    </a>
+                </th>
+                <th>
+                    Username
+                    <a asp-page="/Users/Index" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="UserName" asp-route-sortOrder="asc">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
+                    <a asp-page="/Users/Index" asp-route-searchWord="@Model.SearchWord" asp-route-sortColumn="UserName" asp-route-sortOrder="desc">
+                        <i class="fas fa-angle-down"></i>
+                    </a>
+                </th>
+                
+                <th>
+                    Phone Number
+                </th>
+                <th>
+                    Role(s)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.UserName</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>
+                        @{ int iteration = 0; }
+                        @foreach (var role in item.Roles)
+                        {
+                            
+                            @role.Name
+                            @if (role != item.Roles.Last())
+                            {
+                                <span> & </span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-page="/Users/User" asp-route-customerId="@item.Id">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <!--  Container for pagination   -->
+    <div class="d-flex justify-content-between">
+        <!--   Div för första prev   -->
+
+        <div>
+            @if (Model.CurrentPage != 1)
+            {
+                <a class="btn btn-secondary" asp-page="/Users/Index"
+               asp-route-pageno="1"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
+                    1
+                </a>
+                <a class="btn btn-secondary" asp-page="/Users/Index"
+               asp-route-pageno="@(Model.CurrentPage-1)"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
+                    Prev
+                </a>
+
+            }
+        </div>
+        <!--   Div för nummer   -->
+
+        <div>
+            @for (var i = 1; i <= Model.PageCount; i++)
+            {
+                @if (!(i > Model.CurrentPage + BelowCurrentPage) && (i > Model.CurrentPage - AboveCurrentPage))
+                {
+                    <a class="btn @(Model.CurrentPage == i ? "btn-primary" : "btn-secondary")" asp-page="/Users/Index"
+               asp-route-pageno="@i"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
+                        @i
+                    </a>
+                }
+            }
+        </div>
+        <!--   Div för sista next   -->
+
+        <div>
+            <a class="btn btn-secondary" asp-page="/Users/Index"
+               asp-route-pageno="@(Model.CurrentPage+1)"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
+                Next
+            </a>
+            <a class="btn btn-secondary" asp-page="/Users/Index"
+               asp-route-pageno="@Model.PageCount"
+               asp-route-searchWord="@Model.SearchWord"
+               asp-route-sortColumn="@Model.SortColumn"
+               asp-route-sortOrder="@Model.SortOrder">
+                @Model.PageCount
+            </a>
+
+        </div>
+    </div>
+
+
+</div>
+
+
