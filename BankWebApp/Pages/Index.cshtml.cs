@@ -17,6 +17,7 @@ namespace BankWebApp.Pages
         private readonly ICustomerService _customerService;
         private readonly IAccountService _accountService;
         private readonly ISaldoService _saldoService;
+        private readonly ICountryService _countryService;
 
         public IndexModel(
             ILogger<IndexModel> logger, 
@@ -24,7 +25,8 @@ namespace BankWebApp.Pages
             ITransactionService transactionService,
             ICustomerService customerService,
             IAccountService accountService,
-            ISaldoService saldoService
+            ISaldoService saldoService,
+            ICountryService countryService
             )
         {
             _logger = logger;
@@ -33,6 +35,7 @@ namespace BankWebApp.Pages
             _customerService = customerService;
             _accountService = accountService;
             _saldoService = saldoService;
+            _countryService = countryService;
         }
 
         public List<IndexUser> Users { get; set; }
@@ -45,6 +48,8 @@ namespace BankWebApp.Pages
         public int NumberOfCustomers { get; set; }
         public int NumberOfAccounts { get; set; }
         public decimal TotalOfAllAccounts { get; set; }
+
+        public IEnumerable<CountryViewModel> Countries { get; set; }
 
 
         public class TransactionPerWeekDay
@@ -69,12 +74,7 @@ namespace BankWebApp.Pages
             NumberOfAccounts = _accountService.NumberOfAllAccounts();
             TotalOfAllAccounts = _saldoService.TotalOfAllSaldo();
 
-            //Users = query.Select(u => new IndexUser
-            //{
-            //    Id = u.UserId,
-            //    Username = u.LoginName,
-            //}).Take(5).ToList();
-
+            Countries = _countryService.GetCountryData();
 
         }
 
