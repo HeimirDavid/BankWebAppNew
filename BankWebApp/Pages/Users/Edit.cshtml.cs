@@ -19,6 +19,8 @@ namespace BankWebApp.Pages.Users
         public EditUserViewModel editUserViewModel { get; set; }
 
 
+        public IEnumerable<IdentityRole> Roles { get; set; }
+
         //public bool GetAdminRole { get; set; }
 
 
@@ -37,8 +39,9 @@ namespace BankWebApp.Pages.Users
         {
 
             editUserViewModel = _userService.EditUserOnGet(userId);
+            Roles = _userService.GetUserRoles(editUserViewModel.Id);
 
-            foreach (var role in editUserViewModel.Roles)
+            foreach (var role in Roles)
             {
                 if (role.Name == "Admin")
                 {
@@ -55,14 +58,11 @@ namespace BankWebApp.Pages.Users
 
         public void OnPost()
         {
+            Roles = _userService.GetUserRoles(editUserViewModel.Id);
+            
             if (ModelState.IsValid)
             {
-                if (editUserViewModel.AdminRole)
-                {
-                    
-                }
-
-                //_userService.UpdateUser(editUserViewModel);
+                _userService.EditUser(editUserViewModel);
             }
 
         }

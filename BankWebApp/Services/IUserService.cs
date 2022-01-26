@@ -17,8 +17,9 @@ namespace BankWebApp.Services
 
         public UserViewModel GetUser(string userId);
         public EditUserViewModel EditUserOnGet(string userId);
-        public void editUser(EditUserViewModel editUserViewModel);
+        public Task EditUser(EditUserViewModel editUserViewModel);
 
+        public IEnumerable<IdentityRole> GetUserRoles(string userId);
 
     }
 }

@@ -54,7 +54,7 @@ namespace BankWebApp.Services
                     query = query.OrderBy(c => c.UserName);
             }
 
-            
+
 
             //return View(usersWithRoles);
 
@@ -103,10 +103,10 @@ namespace BankWebApp.Services
             var rolesDB = _context.Roles;
             var roles = _roleManager.Roles;
             return roles;
-            
+
         }
 
-        private IEnumerable<IdentityRole> GetUserRoles(string userId)
+        public IEnumerable<IdentityRole> GetUserRoles(string userId)
         {
             var user = _userManager.Users.First(u => u.Id == userId);
             var userRoles = _context.UserRoles.Where(ur => ur.UserId == userId);
@@ -126,7 +126,7 @@ namespace BankWebApp.Services
         public UserViewModel GetUser(string userId)
         {
             var user = _userManager.Users.First(u => u.Id == userId);
-           
+
             UserViewModel userViewModel = new UserViewModel
             {
                 Id = user.Id,
@@ -137,10 +137,10 @@ namespace BankWebApp.Services
             };
 
             return userViewModel;
-            
+
         }
 
-        
+
 
         public IEnumerable<User> GetUsers()
         {
@@ -160,15 +160,74 @@ namespace BankWebApp.Services
                 PhoneNumber = user.PhoneNumber,
                 //Password = user.PasswordHash,
                 //ConfirmPassword = user.PasswordHash,
-                Roles = roles,
+                //Roles = roles,
             };
 
             return editUserViewModel;
         }
 
-        public void editUser(EditUserViewModel editUserViewModel)
+        public async Task EditUser(EditUserViewModel editUserViewModel)
         {
-            throw new NotImplementedException();
+            var user = _userManager.Users.First(u => u.Id == editUserViewModel.Id);
+            var Roles = GetUserRoles(user.Id);
+
+            //Admin roles, remove or add. Could be done better using _roleManager and UserManager
+            if (editUserViewModel.AdminRole)
+            {
+                if (!Roles.Any(r => r.Name == "Admin"))
+                {
+                    var role = _context.Roles.First(r => r.Name == "Admin");
+
+                    _context.UserRoles.Add(new IdentityUserRole<string>
+                    {
+                        UserId = user.Id,
+                        RoleId = role.Id
+                    });
+                }
+
+            }
+            else
+            {
+                if (Roles.Any(r => r.Name == "Admin"))
+                {
+                    var role = _context.Roles.First(r => r.Name == "Admin");
+                    var userRoleObj = _context.UserRoles.First(r => r.UserId == user.Id && r.RoleId == role.Id);
+
+                    _context.UserRoles.Remove(userRoleObj);
+                }
+            }
+
+
+            //Cashier roles, remove or add. Could be done better using _roleManager and UserManager
+            if (editUserViewModel.CashierRole)
+            {
+                if (!Roles.Any(r => r.Name == "Cashier"))
+                {
+                    var role = _context.Roles.First(r => r.Name == "Cashier");
+
+                    _context.UserRoles.Add(new IdentityUserRole<string>
+                    {
+                        UserId = user.Id,
+                        RoleId = role.Id
+                    });
+                }
+            }
+            else
+            {
+                if (Roles.Any(r => r.Name == "Cashier"))
+                {
+                    var role = _context.Roles.First(r => r.Name == "Cashier");
+                    var userRoleObj = _context.UserRoles.First(r => r.UserId == user.Id && r.RoleId == role.Id);
+
+                    _context.UserRoles.Remove(userRoleObj);
+                }
+            }
+
+            user.Email = editUserViewModel.Email;
+            user.PhoneNumber = editUserViewModel.PhoneNumber;
+
+            _context.SaveChanges();
+
         }
     }
 }
