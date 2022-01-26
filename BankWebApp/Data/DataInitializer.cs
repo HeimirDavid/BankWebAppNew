@@ -24,13 +24,13 @@ public class DataInitializer
     private void SeedUsers()
     {
         AddUserIfNotExists("stefan.holmberg@systementor.se", "Hejsan123#", new string[] { "Admin" });
-        AddUserIfNotExists("stefan.holmberg@customer.systementor.se", "Hejsan123#", new string[] { "Customer" });
+        AddUserIfNotExists("stefan.holmberg@customer.systementor.se", "Hejsan123#", new string[] { "Cashier" });
     }
 
     private void SeedRoles()
     {
         AddRoleIfNotExisting("Admin");
-        AddRoleIfNotExisting("Customer");
+        AddRoleIfNotExisting("Cashier");
     }
 
     private void AddRoleIfNotExisting(string roleName)

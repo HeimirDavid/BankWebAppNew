@@ -45,8 +45,6 @@ namespace BankWebApp.Pages.Customers
             FillPhoneCode();
             FillGenderList();
 
-            
-
             CustomerToEdit = _customerService.GetCustomer(customerId);
 
             // TODO Fix wtf???

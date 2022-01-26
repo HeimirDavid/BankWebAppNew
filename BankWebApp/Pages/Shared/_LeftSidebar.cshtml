@@ -25,6 +25,13 @@
                 <span class="menu-title">All Customers</span>
             </a>
         </li>
+        <!-- TODO Hide from non admins -->
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/Users/Index">
+                <i class="mdi mdi-grid-large menu-icon"></i>
+                <span class="menu-title">All Users</span>
+            </a>
+        </li>
 
         <li class="nav-item nav-category">Customer operation</li>
 
@@ -70,7 +77,7 @@
             <div class="collapse" id="auth">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register"> Register </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+                    @*<li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>*@
                 </ul>
             </div>
         </li>

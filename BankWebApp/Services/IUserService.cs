@@ -15,5 +15,10 @@ namespace BankWebApp.Services
 
         public IEnumerable<UsersViewModel> GetAllUsersWithRoles(int page, string sortColumn, string sortOrder, string searchWord);
 
+        public UserViewModel GetUser(string userId);
+        public EditUserViewModel EditUserOnGet(string userId);
+        public void editUser(EditUserViewModel editUserViewModel);
+
+
     }
 }

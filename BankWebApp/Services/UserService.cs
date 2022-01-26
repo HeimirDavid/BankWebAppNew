@@ -106,14 +106,69 @@ namespace BankWebApp.Services
             
         }
 
+        private IEnumerable<IdentityRole> GetUserRoles(string userId)
+        {
+            var user = _userManager.Users.First(u => u.Id == userId);
+            var userRoles = _context.UserRoles.Where(ur => ur.UserId == userId);
+
+            var roles = new List<IdentityRole>();
+
+            foreach (var userrole in userRoles)
+            {
+                var role = _context.Roles.First(r => r.Id == userrole.RoleId);
+                roles.Add(role);
+            }
+
+            return roles;
+
+        }
+
+        public UserViewModel GetUser(string userId)
+        {
+            var user = _userManager.Users.First(u => u.Id == userId);
+           
+            UserViewModel userViewModel = new UserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Roles = GetUserRoles(user.Id),
+            };
+
+            return userViewModel;
+            
+        }
+
+        
+
         public IEnumerable<User> GetUsers()
         {
             var query = _context.Users;
             return query;
         }
 
+        public EditUserViewModel EditUserOnGet(string userId)
+        {
+            var user = _userManager.Users.First(u => u.Id == userId);
+            var roles = GetUserRoles(user.Id);
 
+            EditUserViewModel editUserViewModel = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                //Password = user.PasswordHash,
+                //ConfirmPassword = user.PasswordHash,
+                Roles = roles,
+            };
 
+            return editUserViewModel;
+        }
 
+        public void editUser(EditUserViewModel editUserViewModel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

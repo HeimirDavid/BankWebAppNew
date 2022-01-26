@@ -108,7 +108,8 @@ namespace BankWebApp.Areas.Identity.Pages.Account
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            
+            [Display(Name = "Phone Number")]
+            public string PhoneNumber { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -141,6 +142,7 @@ namespace BankWebApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.PhoneNumber = Input.PhoneNumber;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -152,14 +154,10 @@ namespace BankWebApp.Areas.Identity.Pages.Account
 
                     for (int i = 0; i < Input.UserRolesString.Count(); i++)
                     {
-                        //var role = _roleManager.FindByNameAsync(Input.UserRolesString[i]);
                         await _userManager.AddToRoleAsync(user, Input.UserRolesString[i]);
                     }
 
-                    //Input.UserRoles.ToList().ForEach(r =>
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, r);
-                    //});
+                   
 
 
                     var userId = await _userManager.GetUserIdAsync(user);
