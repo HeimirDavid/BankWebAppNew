@@ -10,15 +10,15 @@ namespace BankWebApp.Services
 
         public DateTime TodaysDate { get; set; }
 
-        DateTime date1 = new DateTime(2013, 1, 15);
+        DateTime date1 = DateTime.Now;
 
         public decimal AmountTooHigh { get; set; } = 15000;
 
-        enum Season
-        {
-            FirstDay = 1,
-            Sunday = 0,
-        }
+        //enum Season
+        //{
+        //    FirstDay = 1,
+        //    Sunday = 0,
+        //}
 
         public Tuple<int, int> GetWeek(DateTime d)
         {
@@ -63,7 +63,7 @@ namespace BankWebApp.Services
             TodaysDate = date1;
             var WeekNumAndYear = GetWeek(TodaysDate);
 
-            int WeekNum = WeekNumAndYear.Item1 -1;
+            int WeekNum = WeekNumAndYear.Item1 -2;
             int year = WeekNumAndYear.Item2;
 
             var weekDates = GetWeekDays(year, WeekNum);
@@ -81,7 +81,7 @@ namespace BankWebApp.Services
             TodaysDate = date1;
             var WeekNumAndYear = GetWeek(TodaysDate);
 
-            int WeekNum = WeekNumAndYear.Item1;
+            int WeekNum = WeekNumAndYear.Item1 - 1;
             int year = WeekNumAndYear.Item2;
 
             var weekDates = GetWeekDays(year, WeekNum);

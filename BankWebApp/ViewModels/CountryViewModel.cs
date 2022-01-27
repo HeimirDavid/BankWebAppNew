@@ -6,5 +6,6 @@
         public int Customers { get; set; }
         public int Accounts { get; set; }
         public decimal Balance { get; set; }
+        public string CountryImage { get; set; }
     }
 }

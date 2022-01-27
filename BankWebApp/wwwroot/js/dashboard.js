@@ -555,7 +555,7 @@
             var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
             var doughnutPieData = {
                 datasets: [{
-                    data: [40, 20, 30, 10],
+                    data: [400, 200, 300, 100],
                     backgroundColor: [
                         "#1F3BB3",
                         "#FDD0C7",

@@ -11,16 +11,29 @@ namespace BankWebApp.Services
         {
             _context = context;
         }
+
+        public class Data
+        {
+            public int AccountId { get; set; }
+            public decimal Balance { get; set; }
+
+            public int CustomerId { get; set; }
+
+            public string CustomerName { get; set; }
+
+            public string CountryName { get; set; }
+        }
+
         public IEnumerable<CountryViewModel> GetCountryData()
         {
             List<CountryViewModel> Countries = new List<CountryViewModel>();
 
             //var query = _context.Customers.Include(c => c.Dispositions).ThenInclude(d => d.Account).ToList();
 
-            CountryViewModel Norway = new CountryViewModel { CountryName = "Norway" };
-            CountryViewModel Sweden = new CountryViewModel { CountryName = "Sweden" };
-            CountryViewModel Finland = new CountryViewModel { CountryName = "Finland" };
-            CountryViewModel Denmark = new CountryViewModel { CountryName = "Denmark" };
+            CountryViewModel Norway = new CountryViewModel { CountryName = "Norway", CountryImage= "images/flags/no.svg" };
+            CountryViewModel Sweden = new CountryViewModel { CountryName = "Sweden", CountryImage = "images/flags/se.svg" };
+            CountryViewModel Finland = new CountryViewModel { CountryName = "Finland", CountryImage = "images/flags/fi.svg" };
+            CountryViewModel Denmark = new CountryViewModel { CountryName = "Denmark", CountryImage = "images/flags/dk.svg" };
 
             Countries.Add(Norway);
             Countries.Add(Sweden);
@@ -28,149 +41,57 @@ namespace BankWebApp.Services
             Countries.Add(Denmark);
 
 
-            //var CustomersSweden = _context.Customers.Include(c => c.Dispositions).Where(c => c.Country == "Sweden").ToList();
-            //var s = _context.Customers.Where(c => c.Country == "Sweden").ToList();
-            //var n = _context.Customers.Where(c => c.Country == "Norway").ToList();
-            //var d = _context.Customers.Where(c => c.Country == "Denmark").ToList();
-            //var f = _context.Customers.Where(c => c.Country == "Finland").ToList();
-            //var ice = _context.Customers.Where(c => c.CountryCode == "IS").ToList();
-
-            //var czz = _context.Customers.ToList();
-            //var totalOfAccounts = _context.Accounts.ToList();
-            //decimal totalBalance = 0;
-
-            //foreach (var acc in totalOfAccounts)
-            //{
-            //    totalBalance += acc.Balance;
-            //}
-
-
-            //foreach (var customer in CustomersSweden)
-            //{
-            //    var dispositions = _context.Dispositions.Where(d => d.CustomerId == customer.CustomerId);
-            //    foreach (var disposition in dispositions)
-            //    {
-            //        var accounts = _context.Accounts.Where(a => a.AccountId == disposition.AccountId);
-            //    }
-            //}
-
-           
             var query = _context.Accounts
-                    .Include(a => a.Dispositions).ThenInclude(d => d.Customer);
+                    .Include(a => a.Dispositions)
+                    .ThenInclude(d => d.Customer);
+
+            List<Data> accountData = new List<Data>();
 
             foreach (var country in Countries)
             {
 
-                List<Account> ac = new List<Account>();
-
                 foreach (var account in query)
                 {
-                    bool isFromCountry = false;
+
                     foreach (var disposition in account.Dispositions)
                     {
                         if (disposition.Customer != null)
                         {
                             if (disposition.Customer.Country == country.CountryName)
                             {
-                                //c.Add(new Customer
-                                //{
-                                //    CustomerId = disposition.CustomerId,
-                                //    Country = disposition.Customer.Country,
-                                //});
+                                accountData.Add(new Data
+                                {
+                                    AccountId = account.AccountId,
+                                    Balance = account.Balance,
+                                    CustomerId = disposition.Customer.CustomerId,
+                                    CustomerName = disposition.Customer.Givenname,
+                                    CountryName = disposition.Customer.Country,
+                                });
 
                                 country.Customers++;
-                                isFromCountry = true;
-
                             }
                         }
 
                     }
-                    if (isFromCountry)
-                    {
-                        ac.Add(new Account
-                        {
-                            AccountId = account.AccountId,
-                        });
-
-                        //country.Accounts++;
-                        country.Balance += account.Balance;
-                    }
+                 
                 }
-
-
-                List<Account> AccRemoveDublicates = ac
-                    .GroupBy(c => c.AccountId)
-                    .Select(c => c.First())
-                    .ToList();
-
-                country.Accounts = AccRemoveDublicates.Count();
             }
 
+            List<Data> DataWithoutDublicates = accountData
+                   .GroupBy(c => c.AccountId)
+                   .Select(c => c.First())
+                   .ToList();
 
-            ////SWEDEN
-            //List<Customer> customers = new List<Customer>();
+          
+            foreach (var country in Countries)
+            {
+                country.Accounts = DataWithoutDublicates.Where(d => d.CountryName == country.CountryName).Count();
+                country.Balance = DataWithoutDublicates.Where(d => d.CountryName == country.CountryName).Sum(d => d.Balance);
+            }
 
-            //foreach (var account in query)
-            //{
-            //    foreach (var disposition in account.Dispositions)
-            //    {
-            //        if (disposition.Customer != null)
-            //        {
-            //            if (disposition.Customer.Country == "Sweden")
-            //            {
-            //                customers.Add(new Customer
-            //                {
-            //                    CustomerId = disposition.CustomerId,
-            //                    Country = disposition.Customer.Country,
-            //                });
-            //            }
-            //        }
+            
 
-            //    }
-            //}
-
-
-            //List<Customer> customersOfSweden = customers
-            //    .GroupBy(c => c.CustomerId)
-            //    .Select(c => c.First())
-            //    .ToList();
-
-
-            //Console.WriteLine("Hejhopp");
-
-
-
-            //// NORWAY
-
-            //List<Customer> OriginalNorwayCustomers = new List<Customer>();
-
-            //foreach (var account in query)
-            //{
-            //    foreach (var disposition in account.Dispositions)
-            //    {
-            //        if (disposition.Customer != null)
-            //        {
-            //            if (disposition.Customer.Country == "Norway")
-            //            {
-            //                OriginalNorwayCustomers.Add(new Customer
-            //                {
-            //                    CustomerId = disposition.CustomerId,
-            //                    Country = disposition.Customer.Country,
-            //                });
-            //            }
-            //        }
-
-            //    }
-            //}
-
-            //List<Customer> customersOfNorway = OriginalNorwayCustomers
-            //    .GroupBy(c => c.CustomerId)
-            //    .Select(c => c.First())
-            //    .ToList();
-
-
-
-
+            
 
 
             //// Denmark
@@ -200,42 +121,6 @@ namespace BankWebApp.Services
             //    .GroupBy(c => c.CustomerId)
             //    .Select(c => c.First())
             //    .ToList();
-
-
-
-
-
-
-
-
-            //// Finland
-
-            //List<Customer> OriginalFinlandCustomers = new List<Customer>();
-
-            //foreach (var account in query)
-            //{
-            //    foreach (var disposition in account.Dispositions)
-            //    {
-            //        if (disposition.Customer != null)
-            //        {
-            //            if (disposition.Customer.Country == "Finland")
-            //            {
-            //                OriginalFinlandCustomers.Add(new Customer
-            //                {
-            //                    CustomerId = disposition.CustomerId,
-            //                    Country = disposition.Customer.Country,
-            //                });
-            //            }
-            //        }
-
-            //    }
-            //}
-
-            //List<Customer> customersOfFinland = OriginalFinlandCustomers
-            //    .GroupBy(c => c.CustomerId)
-            //    .Select(c => c.First())
-            //    .ToList();
-
 
 
             return Countries;
