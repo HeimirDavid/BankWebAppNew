@@ -28,8 +28,6 @@ namespace BankWebApp.Services
         {
             List<CountryViewModel> Countries = new List<CountryViewModel>();
 
-            //var query = _context.Customers.Include(c => c.Dispositions).ThenInclude(d => d.Account).ToList();
-
             CountryViewModel Norway = new CountryViewModel { CountryName = "Norway", CountryImage= "images/flags/no.svg" };
             CountryViewModel Sweden = new CountryViewModel { CountryName = "Sweden", CountryImage = "images/flags/se.svg" };
             CountryViewModel Finland = new CountryViewModel { CountryName = "Finland", CountryImage = "images/flags/fi.svg" };
@@ -89,41 +87,33 @@ namespace BankWebApp.Services
                 country.Balance = DataWithoutDublicates.Where(d => d.CountryName == country.CountryName).Sum(d => d.Balance);
             }
 
-            
-
-            
-
-
-            //// Denmark
-
-            //List<Customer> OriginalDenmarkCustomers = new List<Customer>();
-
-            //foreach (var account in query)
-            //{
-            //    foreach (var disposition in account.Dispositions)
-            //    {
-            //        if (disposition.Customer != null)
-            //        {
-            //            if (disposition.Customer.Country == "Denmark")
-            //            {
-            //                OriginalDenmarkCustomers.Add(new Customer
-            //                {
-            //                    CustomerId = disposition.CustomerId,
-            //                    Country = disposition.Customer.Country,
-            //                });
-            //            }
-            //        }
-
-            //    }
-            //}
-
-            //List<Customer> customersOfDenmark = OriginalDenmarkCustomers
-            //    .GroupBy(c => c.CustomerId)
-            //    .Select(c => c.First())
-            //    .ToList();
-
-
             return Countries;
+        }
+
+
+        public IEnumerable<TopCountryViewModel> GetCountryData(string countryName)
+        {
+            List<TopCountryViewModel> TopCustomers = new List<TopCountryViewModel>();
+
+
+            TopCustomers = _context.Customers
+                .Include(c => c.Dispositions)
+                .ThenInclude(d => d.Account)
+                .Where(c => c.Country == countryName)
+                .SelectMany(c => c.Dispositions) //// THIS IS THE ONE I WAS MISSING. TACK RICHARD
+                .OrderByDescending(d => d.Account.Balance)
+                .Take(10)
+                .Select(d => new TopCountryViewModel
+                {
+                    CustomerId = d.CustomerId,
+                    CustomerName = d.Customer.Givenname,
+                    Email = d.Customer.Emailaddress,
+                    Balance = d.Account.Balance,
+                })
+                .ToList();
+
+            return TopCustomers;
+
         }
     }
 }

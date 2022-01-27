@@ -63,9 +63,16 @@ body {
     background: #fff;
 }
 
-    .sidebar .nav.sub-menu {
-        background: #f2f2f2;
-    }
+.sidebar .nav.sub-menu {
+    background: #f2f2f2;
+}
+
+.country-flag-icon {
+    height: 50px;
+    border-radius: 10px;
+    margin-right:1em;
+  
+}
 
 
 
@@ -73,8 +80,6 @@ body {
 /************   ANIMATED SEARCH BOX    ****************/
 /************   TAKEN FROM: https://codepen.io/ahmadbassamemran/pen/rNjMXqg    ****************/
 /************   SMALL CHANGES TO COLOUR AND BORDER RADIUS    ****************/
-
-
 .search-box {
     width: fit-content;
     height: fit-content;

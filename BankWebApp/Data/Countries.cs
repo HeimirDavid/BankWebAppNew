@@ -9,7 +9,14 @@
             {  "Denmark", "DK" },
             {  "Norway", "NO" },
             {  "Finland", "FI" },
-            {  "Iceland", "IS" },
+        };
+
+        public static Dictionary<string, string> CountryFlags = new Dictionary<string, string>
+        {
+            { "Sweden", "/images/flags/se.svg" },
+            { "Norway", "/images/flags/no.svg" },
+            { "Finland", "/images/flags/fi.svg" },
+            { "Denmark", "/images/flags/dk.svg" },
         };
 
     }

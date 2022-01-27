@@ -53,12 +53,12 @@ namespace BankWebApp.Pages.Customers
 
             string Error = "Error";
 
-            if (Countries._Countries[NewCustomer.Country] == Error)
+            if (BankWebApp.Data.Countries._Countries[NewCustomer.Country] == Error)
             {
                 ModelState.AddModelError("NewCustomer.Country", "Must choose a country");
             } else
             {
-                NewCustomer.CountryCode = Countries._Countries[NewCustomer.Country]; 
+                NewCustomer.CountryCode = BankWebApp.Data.Countries._Countries[NewCustomer.Country]; 
             }
 
             if (CountryPhoneCode._Codes[NewCustomer.Telephonecountrycode] == Error)
@@ -85,7 +85,7 @@ namespace BankWebApp.Pages.Customers
 
         private void FillCountries()
         {
-            CountryList = Countries._Countries.Keys.Select(c => new SelectListItem
+            CountryList = BankWebApp.Data.Countries._Countries.Keys.Select(c => new SelectListItem
             {
                 Text = c,
                 Value = c

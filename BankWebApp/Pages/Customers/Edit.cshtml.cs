@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace BankWebApp.Pages.Customers
 {
     [Authorize]
-
     public class EditModel : PageModel
     {
         private readonly ICustomerService _customerService;
@@ -52,18 +51,18 @@ namespace BankWebApp.Pages.Customers
             CustomerViewModel = test;
         }
 
-        public void OnPost()
+        public void OnPost(int customerId)
         {
             string Error = "Error";
-            CustomerViewModel.CustomerId = CustomerId;
+            CustomerViewModel.CustomerId = customerId;
 
-            if (Countries._Countries[CustomerViewModel.Country] == Error)
+            if (BankWebApp.Data.Countries._Countries[CustomerViewModel.Country] == Error)
             {
                 ModelState.AddModelError("NewCustomer.Country", "Must choose a country");
             }
             else
             {
-                CustomerViewModel.CountryCode = Countries._Countries[CustomerViewModel.Country];
+                CustomerViewModel.CountryCode = BankWebApp.Data.Countries._Countries[CustomerViewModel.Country];
             }
 
             if (CountryPhoneCode._Codes[CustomerViewModel.Telephonecountrycode] == Error)
@@ -86,7 +85,7 @@ namespace BankWebApp.Pages.Customers
 
         private void FillCountries()
         {
-            CountryList = Countries._Countries.Keys.Select(c => new SelectListItem
+            CountryList = BankWebApp.Data.Countries._Countries.Keys.Select(c => new SelectListItem
             {
                 Text = c,
                 Value = c
