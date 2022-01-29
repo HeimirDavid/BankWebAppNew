@@ -29,6 +29,8 @@ builder.Services.AddTransient<ICountryService, CountryService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+builder.Services.AddControllers();
+
 builder.Services.AddResponseCaching();
 
 var app = builder.Build();
@@ -57,5 +59,6 @@ app.UseAuthorization();
 app.UseResponseCaching();
 
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
