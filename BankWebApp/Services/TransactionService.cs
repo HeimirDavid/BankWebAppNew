@@ -1,4 +1,5 @@
-﻿using BankWebApp.Models;
+﻿using BankWebApp.MobileApiModels;
+using BankWebApp.Models;
 using System.Globalization;
 using static BankWebApp.Services.ITransactionService;
 
@@ -154,7 +155,52 @@ namespace BankWebApp.Services
             return TransactionError.Ok;
         }
 
-        
+        //public IEnumerable<TransactionsAPIModel> GetTransactions(int AccountId)
+        //{
+        //    var query = _context.Transactions
+                
+        //        .Where(a => a.AccountId == AccountId)
+        //        .OrderByDescending(a => a.Date)
+        //        .Take(10)
+        //        .Select(a => new TransactionsAPIModel
+        //        {
+        //            AccountId = a.AccountId,
+        //            TransactionId = a.TransactionId,
+        //            Date = a.Date,
+        //            Type = a.Type,
+        //            Operation = a.Operation,
+        //            Amount = a.Amount,
+        //            Balance = a.Balance
+        //        });
+
+
+        //    return query;
+        //}
+
+        public IEnumerable<TransactionsAPIModel> GetTransactions(int AccountId, int limit, int offset)
+        {
+            var query = _context.Transactions
+
+                .Where(a => a.AccountId == AccountId)
+                .OrderByDescending(a => a.Date)
+                .Skip(offset)
+                .Take(limit)
+                .Select(a => new TransactionsAPIModel
+                {
+                    AccountId = a.AccountId,
+                    TransactionId = a.TransactionId,
+                    Date = a.Date,
+                    Type = a.Type,
+                    Operation = a.Operation,
+                    Amount = a.Amount,
+                    Balance = a.Balance
+                });
+
+
+            return query;
+        }
+
+
 
     }
 }
