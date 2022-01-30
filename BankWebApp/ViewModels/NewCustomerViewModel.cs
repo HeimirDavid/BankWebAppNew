@@ -37,6 +37,8 @@ namespace BankWebApp.ViewModels
         [StringLength(150)]
         [EmailAddress]
         public string? Emailaddress { get; set; }
+
+       
     }
 }
 

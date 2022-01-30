@@ -2,6 +2,7 @@
 using BankWebApp.Infrastructure.Paging;
 using BankWebApp.Models;
 using BankWebApp.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankWebApp.Services
@@ -10,11 +11,24 @@ namespace BankWebApp.Services
     {
         private readonly BankContext _context;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUserStore<User> _userStore;
+        private readonly IUserEmailStore<User> _emailStore;
 
-        public CustomerService(BankContext bankContext, IMapper mapper)
+        public CustomerService(BankContext bankContext, 
+            IMapper mapper, 
+            UserManager<User> userManager,
+            IUserStore<User> userStore,
+            RoleManager<IdentityRole> roleManager
+            )
         {
             _context = bankContext;
             _mapper = mapper;
+            _userManager = userManager;
+            _userStore = userStore;
+            _emailStore = GetEmailStore();
+            _roleManager = roleManager;
         }
 
 
@@ -125,29 +139,36 @@ namespace BankWebApp.Services
             return query; 
         }
 
-        public void AddCustomer(NewCustomerViewModel customer)
+        public async Task AddCustomer(NewCustomerViewModel customer, string password, string confirmPassword)
         {
             // mapp using automapper
             var DBCustomer = _mapper.Map<Customer>(customer);
 
-            //var DBCustomer = new Customer
-            //{
-            //    Gender = customer.Gender,
-            //    Givenname = customer.Givenname,
-            //    Surname = customer.Surname,
-            //    Streetaddress = customer.Streetaddress,
-            //    City = customer.City,
-            //    Zipcode = customer.Zipcode,
-            //    Country = customer.Country,
-            //    CountryCode = customer.CountryCode,
-            //    Birthday = customer.Birthday,
-            //    NationalId = customer.NationalId,
-            //    Telephonecountrycode = customer.Telephonecountrycode,
-            //    Telephonenumber = customer.Telephonenumber,
-            //    Emailaddress = customer.Emailaddress,
-            //};
+            //var user = CreateUser();
+            //user.Customer = DBCustomer;
+            //user.UserName = DBCustomer.Emailaddress;
+            //user.Email = DBCustomer.Emailaddress;
 
-            _context.Customers.Add(DBCustomer);
+            //var result = await _userManager.CreateAsync(user, password);
+
+
+            //FROM SEED 
+            if (_userManager.FindByEmailAsync(DBCustomer.Emailaddress).Result != null) return;
+
+            var user = new User
+            {
+                UserName = DBCustomer.Emailaddress,
+                Email = DBCustomer.Emailaddress,
+                Customer = DBCustomer,
+                EmailConfirmed = true,
+            };
+            string[] roles = new string[] { "Customer" };
+
+            _userManager.CreateAsync(user, password).Wait();
+            _userManager.AddToRolesAsync(user, roles).Wait();
+
+
+            //_context.Customers.Add(DBCustomer);
 
             var Account = new Account
             {
@@ -176,6 +197,34 @@ namespace BankWebApp.Services
 
             _mapper.Map(CustomerWithNewValues, customerFromDb);
             _context.SaveChanges();
+        }
+
+
+
+
+
+
+        private IUserEmailStore<User> GetEmailStore()
+        {
+            if (!_userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<User>)_userStore;
+        }
+
+        private User CreateUser()
+        {
+            try
+            {
+                return Activator.CreateInstance<User>();
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
+                    $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+            }
         }
     }
 

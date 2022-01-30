@@ -31,6 +31,7 @@ public class DataInitializer
     {
         AddRoleIfNotExisting("Admin");
         AddRoleIfNotExisting("Cashier");
+        AddRoleIfNotExisting("Customer");
     }
 
     private void AddRoleIfNotExisting(string roleName)

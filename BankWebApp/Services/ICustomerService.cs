@@ -15,7 +15,7 @@ namespace BankWebApp.Services
         public Customer GetCustomerWithAccountNo(int accountId);
         public IEnumerable<Disposition> GetAllDispositions();
 
-        public void AddCustomer(NewCustomerViewModel customer);
+        public Task AddCustomer(NewCustomerViewModel customer, string password, string confirmPassword);
         public void UpdateCustomer(EditCustomerViewModel CustomerWithNewValues);
     }
 }

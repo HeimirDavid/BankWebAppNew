@@ -36,7 +36,7 @@ namespace BankWebApp.Pages.Users
             Items = _userService.GetAllUsersWithRoles(CurrentPage, sortColumn, sortOrder, searchWord);
 
 
-            PageCount = Items.First().PageCount;
+            PageCount = Items.FirstOrDefault().PageCount;
 
 
             //Items = pageResult.Results.Select(i => new UsersViewModel
