@@ -7,9 +7,9 @@ namespace BankWebApp.Data;
 public class DataInitializer
 {
     private readonly BankContext _dbContext;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public DataInitializer(BankContext dbContext, UserManager<IdentityUser> userManager)
+    public DataInitializer(BankContext dbContext, UserManager<User> userManager)
     {
         _dbContext = dbContext;
         _userManager = userManager;
@@ -48,7 +48,7 @@ public class DataInitializer
     {
         if (_userManager.FindByEmailAsync(userName).Result != null) return;
 
-        var user = new IdentityUser
+        var user = new User
         {
             UserName = userName,
             Email = userName,

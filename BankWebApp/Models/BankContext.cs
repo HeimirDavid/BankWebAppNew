@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BankWebApp.Models
 {
-    public partial class BankContext : IdentityDbContext
+    public partial class BankContext : IdentityDbContext<User>
     {
         public BankContext()
         {
@@ -24,7 +24,7 @@ namespace BankWebApp.Models
         public virtual DbSet<Loan> Loans { get; set; } = null!;
         public virtual DbSet<PermenentOrder> PermenentOrders { get; set; } = null!;
         public virtual DbSet<Transaction> Transactions { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
+        //public virtual DbSet<User> Users { get; set; } = null!;
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //        {
@@ -183,22 +183,22 @@ namespace BankWebApp.Models
                     .HasConstraintName("FK_Transactions_Accounts");
             });
 
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.ToTable("User");
+            //modelBuilder.Entity<User>(entity =>
+            //{
+            //    entity.ToTable("User");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
+            //    entity.Property(e => e.UserId).HasColumnName("UserID");
 
-                entity.Property(e => e.FirstName).HasMaxLength(40);
+            //    entity.Property(e => e.FirstName).HasMaxLength(40);
 
-                entity.Property(e => e.LastName).HasMaxLength(40);
+            //    entity.Property(e => e.LastName).HasMaxLength(40);
 
-                entity.Property(e => e.LoginName).HasMaxLength(40);
+            //    entity.Property(e => e.LoginName).HasMaxLength(40);
 
-                entity.Property(e => e.PasswordHash)
-                    .HasMaxLength(64)
-                    .IsFixedLength();
-            });
+            //    entity.Property(e => e.PasswordHash)
+            //        .HasMaxLength(64)
+            //        .IsFixedLength();
+            //});
 
             OnModelCreatingPartial(modelBuilder);
         }

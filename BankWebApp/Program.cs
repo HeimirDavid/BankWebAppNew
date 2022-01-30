@@ -13,7 +13,7 @@ builder.Services.AddDbContext<BankContext>(options =>
     options.UseSqlServer(
        builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+builder.Services.AddDefaultIdentity<User>(options => {
     options.SignIn.RequireConfirmedAccount = false;
     })
     .AddRoles<IdentityRole>()

@@ -88,7 +88,7 @@ namespace BankWebApp.Pages
 
             var PreviousDate = new DateTime();
 
-            var FirstDate = Transactions.ToList().First().Date;
+            var FirstDate = Transactions.ToList().FirstOrDefault()?.Date;
 
             TransactionPerWeekDay transactionPerWeekDay = new TransactionPerWeekDay();
 

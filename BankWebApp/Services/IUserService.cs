@@ -11,7 +11,7 @@ namespace BankWebApp.Services
 
         IEnumerable<IdentityRole> GetRoles();
 
-        public PagedResult<IdentityUser> GetAll(int page, string sortColumn, string sortOrder, string searchWord);
+        public PagedResult<User> GetAll(int page, string sortColumn, string sortOrder, string searchWord);
 
         public IEnumerable<UsersViewModel> GetAllUsersWithRoles(int page, string sortColumn, string sortOrder, string searchWord);
 

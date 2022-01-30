@@ -5,25 +5,44 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BankWebApp.Migrations
 {
-    public partial class fixingUser : Migration
+    public partial class NewUsers : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "User");
+            //migrationBuilder.DropTable(
+            //    name: "User");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Discriminator",
+            migrationBuilder.AddColumn<int>(
+                name: "CustomerId",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_CustomerId",
+                table: "AspNetUsers",
+                column: "CustomerId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_Customers_CustomerId",
+                table: "AspNetUsers",
+                column: "CustomerId",
+                principalTable: "Customers",
+                principalColumn: "CustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_AspNetUsers_Customers_CustomerId",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropIndex(
+                name: "IX_AspNetUsers_CustomerId",
+                table: "AspNetUsers");
+
             migrationBuilder.DropColumn(
-                name: "Discriminator",
+                name: "CustomerId",
                 table: "AspNetUsers");
 
             migrationBuilder.CreateTable(

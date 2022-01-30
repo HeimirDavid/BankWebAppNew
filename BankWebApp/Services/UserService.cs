@@ -10,16 +10,16 @@ namespace BankWebApp.Services
     {
         private readonly BankContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public UserService(BankContext context, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public UserService(BankContext context, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             _context = context;
             _roleManager = roleManager;
             _userManager = userManager;
         }
 
-        public PagedResult<IdentityUser> GetAll(int page, string sortColumn, string sortOrder, string searchWord)
+        public PagedResult<User> GetAll(int page, string sortColumn, string sortOrder, string searchWord)
         {
             //List<UsersViewModel> usersViewModel = new List<UsersViewModel>();
             var query = _userManager.Users;
