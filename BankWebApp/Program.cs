@@ -6,10 +6,25 @@ using BankWebApp.Data;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// JWT Tokens/API
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -17,12 +32,17 @@ builder.Services.AddDbContext<BankContext>(options =>
     options.UseSqlServer(
        builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<User>(options => {
+//Identity Options
+builder.Services.AddDefaultIdentity<User>(options =>
+{
     options.SignIn.RequireConfirmedAccount = false;
-    })
+})
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BankContext>();
 
+
+
+// Data initializer and services
 builder.Services.AddTransient<DataInitializer>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITransactionService, TransactionService>();
@@ -43,7 +63,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    scope.ServiceProvider.GetService<DataInitializer>().SeedData(); 
+    scope.ServiceProvider.GetService<DataInitializer>().SeedData();
 }
 
 // Configure the HTTP request pipeline.
@@ -58,6 +78,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
