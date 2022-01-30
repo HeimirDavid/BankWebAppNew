@@ -14,7 +14,7 @@ namespace BankWebApp.Services
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<User> _userStore;
-        private readonly IUserEmailStore<User> _emailStore;
+        //private readonly IUserEmailStore<User> _emailStore;
 
         public CustomerService(BankContext bankContext, 
             IMapper mapper, 
@@ -27,7 +27,7 @@ namespace BankWebApp.Services
             _mapper = mapper;
             _userManager = userManager;
             _userStore = userStore;
-            _emailStore = GetEmailStore();
+            //_emailStore = GetEmailStore();
             _roleManager = roleManager;
         }
 
@@ -144,14 +144,7 @@ namespace BankWebApp.Services
             // mapp using automapper
             var DBCustomer = _mapper.Map<Customer>(customer);
 
-            //var user = CreateUser();
-            //user.Customer = DBCustomer;
-            //user.UserName = DBCustomer.Emailaddress;
-            //user.Email = DBCustomer.Emailaddress;
-
-            //var result = await _userManager.CreateAsync(user, password);
-
-
+            //Create a user based on the Customer
             //FROM SEED 
             if (_userManager.FindByEmailAsync(DBCustomer.Emailaddress).Result != null) return;
 
@@ -204,14 +197,14 @@ namespace BankWebApp.Services
 
 
 
-        private IUserEmailStore<User> GetEmailStore()
-        {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<User>)_userStore;
-        }
+        //private IUserEmailStore<User> GetEmailStore()
+        //{
+        //    if (!_userManager.SupportsUserEmail)
+        //    {
+        //        throw new NotSupportedException("The default UI requires a user store with email support.");
+        //    }
+        //    return (IUserEmailStore<User>)_userStore;
+        //}
 
         private User CreateUser()
         {
