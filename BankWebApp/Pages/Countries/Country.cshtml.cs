@@ -27,8 +27,6 @@ namespace BankWebApp.Pages.Countries
             CountryFlag = BankWebApp.Data.Countries.CountryFlags[countryName];
             CountryName = countryName;
             ResponseTest = DateTime.Now;
-
-
         }
     }
 }
