@@ -124,9 +124,10 @@ namespace BankWebApp.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login([FromBody] UserLoginModel userLogin)
+        public async Task<IActionResult> Login([FromBody] UserLoginModel userLogin)
         {
-            var user = Authenticate(userLogin);
+            var user = await Authenticate(userLogin);
+
 
             if (user != null)
             {
@@ -135,13 +136,6 @@ namespace BankWebApp.Controllers
             }
 
             return NotFound("User not found");
-        }
-
-        [AllowAnonymous]
-        [HttpGet("test")]
-        public IActionResult Test([FromBody] User userLogin)
-        {
-            return Ok("Successfull test");
         }
 
 
@@ -169,15 +163,20 @@ namespace BankWebApp.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private User Authenticate(UserLoginModel userLogin)
+        private async Task<User> Authenticate(UserLoginModel userLogin)
         {
 
-            var currentUser = _context.Users.FirstOrDefault(o => o.UserName.ToLower() == userLogin.Username.ToLower() && o.PasswordHash == userLogin.Password);
+            //var currentUser = _context.Users.FirstOrDefault(o => o.UserName.ToLower() == userLogin.Username.ToLower() && o.PasswordHash == userLogin.Password);
+            var result = await _signInManager.PasswordSignInAsync(userLogin.Username,
+                           userLogin.Password, false, lockoutOnFailure: true);
 
-            if (currentUser != null)
+            if (result.Succeeded)
             {
-                return currentUser;
+                var user = _context.Users.First(u => u.UserName == userLogin.Username);
+                return user;
             }
+
+            
 
             return null;
         }
