@@ -1,5 +1,8 @@
 using API.Services;
+using BankWebApp.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -22,7 +25,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddDbContext<BankContext>(options =>
+    options.UseSqlServer(
+       builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//Identity Options
+builder.Services.AddDefaultIdentity<User>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+})
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<BankContext>();
 
 // Add services to the container.
 builder.Services.AddTransient<IUserService, UserService>();
