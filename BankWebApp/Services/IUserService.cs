@@ -1,4 +1,5 @@
 ﻿using BankWebApp.Infrastructure.Paging;
+using BankWebApp.MobileApiModels;
 using BankWebApp.Models;
 using BankWebApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +21,8 @@ namespace BankWebApp.Services
         public Task EditUser(EditUserViewModel editUserViewModel);
 
         public IEnumerable<IdentityRole> GetUserRoles(string userId);
+
+        public CustomerProfileModel GetUserForApi(string userEmail);
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BankWebApp.Infrastructure.Paging;
+using BankWebApp.MobileApiModels;
 using BankWebApp.Models;
 using BankWebApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -139,6 +140,25 @@ namespace BankWebApp.Services
             return userViewModel;
 
         }
+
+
+        public CustomerProfileModel GetUserForApi(string userEmail)
+        {
+            var user = _userManager.Users.First(u => u.UserName == userEmail);
+
+            CustomerProfileModel userProfileModel = new CustomerProfileModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Roles = GetUserRoles(user.Id),
+            };
+
+            return userProfileModel;
+
+        }
+
 
 
 

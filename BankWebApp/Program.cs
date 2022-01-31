@@ -50,6 +50,7 @@ builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ISaldoService, SaldoService>();
 builder.Services.AddTransient<ICountryService, CountryService>();
+builder.Services.AddTransient<IAPIService, APIService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
