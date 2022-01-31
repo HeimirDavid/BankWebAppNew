@@ -10,22 +10,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// JWT Tokens/API
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-        };
-    });
-
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<BankContext>(options =>
@@ -50,7 +34,6 @@ builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ISaldoService, SaldoService>();
 builder.Services.AddTransient<ICountryService, CountryService>();
-builder.Services.AddTransient<IAPIService, APIService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -86,6 +69,5 @@ app.UseAuthorization();
 app.UseResponseCaching();
 
 app.MapRazorPages();
-app.MapControllers();
 
 app.Run();

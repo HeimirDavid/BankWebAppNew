@@ -1,7 +1,4 @@
-﻿
-
-using BankWebApp.MobileApiModels;
-using BankWebApp.Models;
+﻿using BankWebApp.Models;
 
 namespace BankWebApp.Services
 {
@@ -27,8 +24,6 @@ namespace BankWebApp.Services
         TransactionError Withdraw(int AccountIId, decimal Amount);
 
         //public IEnumerable<TransactionsAPIModel> GetTransactions(int AccountId);
-
-        public IEnumerable<TransactionsAPIModel> GetTransactions(int AccountId, int limit, int offset);
 
 
     }
