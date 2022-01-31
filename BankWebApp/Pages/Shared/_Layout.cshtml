@@ -96,12 +96,11 @@
     <main role="main" class="pb-3">
         <div class="container-fluid page-body-wrapper">
 
-            @if (SignInManager.IsSignedIn(User))
-            {
+          
                 <partial name="_SettingsPanel" />
                 <partial name="_RightSidebar" />
                 <partial name="_LeftSidebar" />
-            }
+            
             @RenderBody()
         </div>
     </main>

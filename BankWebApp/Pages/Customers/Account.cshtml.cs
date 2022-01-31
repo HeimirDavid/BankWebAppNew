@@ -1,12 +1,13 @@
 using BankWebApp.Services;
 using BankWebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankWebApp.Pages.Customers
 {
 
-
+    [Authorize(Roles = "Cashier,Admin")]
     public class AccountModel : PageModel
     {
         private readonly IAccountService _accountService;
@@ -17,6 +18,7 @@ namespace BankWebApp.Pages.Customers
         }
 
         public AccountViewModel Account { get; set; }
+
         public void OnGet(int accountId, int customerId)
         {
             Account = _accountService.GetAccount(accountId, customerId);

@@ -1,13 +1,14 @@
 using BankWebApp.Models;
 using BankWebApp.Services;
 using BankWebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace BankWebApp.Pages.Transactions
 {
-    
+    [Authorize(Roles = "Cashier,Admin")]
     public class TransactionsModel : PageModel
     {
         private readonly ITransactionService _transactionService;

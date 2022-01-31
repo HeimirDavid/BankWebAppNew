@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BankWebApp.Pages.Customers
 {
-    [Authorize]
+    [Authorize(Roles = "Cashier,Admin")]
     public class EditModel : PageModel
     {
         private readonly ICustomerService _customerService;

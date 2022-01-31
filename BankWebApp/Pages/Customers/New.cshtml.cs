@@ -1,6 +1,7 @@
 using BankWebApp.Data;
 using BankWebApp.Services;
 using BankWebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,7 +11,7 @@ using System.Globalization;
 
 namespace BankWebApp.Pages.Customers
 {
-
+    [Authorize(Roles = "Cashier,Admin")]
     [BindProperties]
     public class NewModel : PageModel
     {

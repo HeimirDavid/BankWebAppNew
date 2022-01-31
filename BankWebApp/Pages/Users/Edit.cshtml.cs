@@ -1,5 +1,6 @@
 using BankWebApp.Services;
 using BankWebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,6 +8,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BankWebApp.Pages.Users
 {
+    [Authorize(Roles = "Admin")]
+
     public class EditModel : PageModel
     {
         private readonly IUserService _userService;

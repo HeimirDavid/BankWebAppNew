@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankWebApp.Controllers
 {
-   
-
 
     [Route("api/[controller]")]
     [ApiController]
@@ -19,7 +17,9 @@ namespace BankWebApp.Controllers
             _transactionService = transactionService;
         }
 
-        //[Authorize]
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IEnumerable<TransactionsAPIModel> GetTransactions(int AccountId, int limit, int offset)
         {
             var transactions = _transactionService.GetTransactions(AccountId, limit, offset);
