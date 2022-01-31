@@ -22,7 +22,7 @@ namespace BankWebApp.Controllers
 
         [Authorize(Roles = "Customer")]
         [HttpGet("Profile")]
-        public CustomerProfileModel GetCustomerProfile()
+        public IActionResult GetCustomerProfile()
         {
             var currentUser = GetCurrentUser();
             if (currentUser == null)
@@ -30,8 +30,7 @@ namespace BankWebApp.Controllers
 
             var customerProfile = _userService.GetUserForApi(currentUser.Email);
 
-
-            return customerProfile;
+            return Ok(customerProfile);
         }
 
 

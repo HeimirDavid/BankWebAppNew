@@ -56,7 +56,7 @@ namespace BankWebApp.Controllers
                 new Claim(ClaimTypes.Email, user.Email),
                 //new Claim(ClaimTypes.GivenName, user.Customer.Givenname),
                 //new Claim(ClaimTypes.Surname, user.Customer.),
-                //new Claim(ClaimTypes.Role, role)
+                //new Claim(ClaimTypes.Role, role),
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
