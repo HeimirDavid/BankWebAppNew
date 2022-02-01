@@ -26,7 +26,7 @@ namespace BankWebApp.Controllers
         {
             var currentUser = GetCurrentUser();
             if (currentUser == null)
-                return null;
+                return NotFound();
 
             var customerProfile = _userService.GetUserForApi(currentUser.Email);
 

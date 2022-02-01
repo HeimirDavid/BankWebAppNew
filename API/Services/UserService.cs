@@ -18,7 +18,7 @@ namespace API.Services
 
         public CustomerProfileModel GetUserForApi(string userEmail)
         {
-            var user = _userManager.Users.First(u => u.UserName == userEmail);
+            var user = _userManager.Users.First(u => u.Email == userEmail);
 
             CustomerProfileModel userProfileModel = new CustomerProfileModel
             {

@@ -16,16 +16,16 @@ namespace BankWebApp.Controllers
             _transactionService = transactionService;
         }
 
-
-        [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IEnumerable<TransactionsAPIModel> GetTransactions(int AccountId, int limit, int offset)
+        [HttpGet]
+        public IActionResult GetTransactions(int AccountId, int limit, int offset)
         {
             var transactions = _transactionService.GetTransactions(AccountId, limit, offset);
+            if (transactions == null)
+                return NotFound();
+            //var JSON = new JsonResult(new { items = transactions });
 
-            var JSON = new JsonResult(new { items = transactions });
-
-            return transactions;
+            return Ok(transactions);
         }
 
 
