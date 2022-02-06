@@ -10,6 +10,7 @@ namespace BankWebApp.Pages.Customers
         private readonly ICustomerService _customerService;
         public string DepositSuccess { get; set; }
         public string WithdrawSuccess { get; set; }
+        public string EditSuccess { get; set; }
         public CustomerModel(ICustomerService customerService)
         {
             _customerService = customerService;
@@ -17,7 +18,7 @@ namespace BankWebApp.Pages.Customers
 
         public CustomerView Customer { get; set; }
 
-        public void OnGet(int customerId, bool deposit, bool withdraw)
+        public void OnGet(int customerId, bool deposit, bool withdraw, bool edit)
         {
             Customer = _customerService.GetCustomer(customerId);
             if (deposit)
@@ -27,6 +28,10 @@ namespace BankWebApp.Pages.Customers
             if (withdraw)
             {
                 DepositSuccess = "The withdraw was successful";
+            }
+            if (edit)
+            {
+                EditSuccess = "Customer updated!";
             }
         }
     }

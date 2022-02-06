@@ -51,7 +51,7 @@ namespace BankWebApp.Pages.Customers
             CustomerViewModel = test;
         }
 
-        public void OnPost(int customerId)
+        public IActionResult OnPost(int customerId)
         {
             string Error = "Error";
             CustomerViewModel.CustomerId = customerId;
@@ -78,8 +78,9 @@ namespace BankWebApp.Pages.Customers
             if (ModelState.IsValid)
             {
                 _customerService.UpdateCustomer(CustomerViewModel);
+                return RedirectToPage("../Customers/Customer/", new { customerId = CustomerId, Edit = true });
             }
-
+            return Page();
             
         }
 

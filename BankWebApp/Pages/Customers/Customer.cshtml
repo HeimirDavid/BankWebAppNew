@@ -18,6 +18,12 @@
           @Model.WithdrawSuccess
         </div>
     }
+    @if (!String.IsNullOrEmpty(Model.EditSuccess))
+    {
+        <div class="alert alert-success" role="alert">
+          @Model.EditSuccess
+        </div>
+    }
 
     
    @if (SignInManager.IsSignedIn(User))
