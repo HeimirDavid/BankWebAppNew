@@ -54,8 +54,17 @@ internal class TransactionsApplication
 
     public void Run()
     {
-        //_transactionsController.ListTransactions();
+         //_transactionsController.ListTransactions();
 
+        string[] Countries = { "Sweden", "Norway", "Denmark", "Finland" };
+       
+
+        foreach (var country in Countries)
+        {
+            _transactionsController.TransactionsPerCountry(country);
+        }
+
+        
 
 
     }
