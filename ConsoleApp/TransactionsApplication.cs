@@ -6,10 +6,9 @@ internal class TransactionsApplication
 {
 
     private readonly TransactionsController _transactionsController;
+    private readonly IFraudService _transactionService;
 
-    private readonly ITransactionService _transactionService;
-
-    public TransactionsApplication(TransactionsController transactionsController, ITransactionService transactionService)
+    public TransactionsApplication(TransactionsController transactionsController, IFraudService transactionService)
     {
         _transactionsController = transactionsController;
         _transactionService = transactionService;
@@ -19,6 +18,9 @@ internal class TransactionsApplication
     {
         CreateRapport();
         _transactionService.WriteDateToTextFile();
+
+        Environment.Exit(0);
+
     }
 
 
@@ -82,7 +84,8 @@ internal class TransactionsApplication
             Console.WriteLine($"Report for {country} created successfully");
             writer.Close();
         }
-
+        Console.WriteLine("");
+        Console.WriteLine("All reports created");
     }
 
 

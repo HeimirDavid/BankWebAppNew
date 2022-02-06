@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp.Services
 {
-    public interface ITransactionService
+    public interface IFraudService
     {
         public IEnumerable<CustomerDTO> CustomersPerCountry(string country);
         public IEnumerable<Transaction> GetTransactionsForAccount(int accountId);

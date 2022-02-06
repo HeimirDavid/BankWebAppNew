@@ -13,9 +13,9 @@ namespace ConsoleApp.Controllers
     public class TransactionsController
     {
 
-        private readonly ITransactionService _transactionService;
+        private readonly IFraudService _transactionService;
 
-        public TransactionsController(ITransactionService transactionService)
+        public TransactionsController(IFraudService transactionService)
         {
             _transactionService = transactionService;
         }

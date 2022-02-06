@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp.Services
 {
-    internal class TransactionService : ITransactionService
+    internal class FraudService : IFraudService
     {
         private readonly BankContext _context;
-        public TransactionService(BankContext context)
+        public FraudService(BankContext context)
         {
             _context = context;
         }
@@ -26,7 +26,7 @@ namespace ConsoleApp.Services
                 .ThenInclude(d => d.Account)
                 .ThenInclude(a => a.Transactions)
                 .Where(c => c.Country == country)
-                .SelectMany(c => c.Dispositions) //// THIS IS THE ONE I WAS MISSING. TACK RICHARD
+                .SelectMany(c => c.Dispositions)
                 .Select(c => new CustomerDTO
                 {
                     CustomerId = c.CustomerId,
