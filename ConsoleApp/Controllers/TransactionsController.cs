@@ -51,6 +51,10 @@ namespace ConsoleApp.Controllers
         }
 
        
+        //public class SusManyTransactionsObjects
+        //{
+        //    public IEnumerable<SusManyTransactions> SusTransactions { get; set; }
+        //}
 
         public class SusTransactionsPerCountry
         {
@@ -140,13 +144,25 @@ namespace ConsoleApp.Controllers
 
                     if (total > 23000)
                     {
+                        
                         var sus = threeDaysSusTransaction.Select(t => new SusManyTransactions
                         {
                             Date = t.Date,
                             Transactions = threeDaysSusTransaction,
                         })
                         .ToList();
-                        
+
+                        foreach (var item in sus)
+                        {
+                            susManyTransactions.Add(new SusManyTransactions
+                            {
+                                Date = item.Date,
+                                Transactions = item.Transactions,
+                            });
+                        }
+                       
+
+
                     }
 
                 }
@@ -155,6 +171,7 @@ namespace ConsoleApp.Controllers
 
 
             susTransactionsPerCountry.SusSingle = susSingleTransactions;
+            susTransactionsPerCountry.SusMany = susManyTransactions;
 
 
 
