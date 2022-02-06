@@ -1,4 +1,5 @@
 ﻿using BankWebApp.Models;
+using ConsoleApp.DTO;
 using ConsoleApp.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,14 +12,9 @@ namespace ConsoleApp.Controllers
 {
     public class TransactionsController
     {
-        //private readonly ITransactionService _transactionService;
-        //public TransactionsController(ITransactionService transactionService)
-        //{
-        //    _transactionService = transactionService;
-        //}
+
         private readonly BankContext _context;
         private readonly ITransactionService _transactionService;
-
 
         public TransactionsController(BankContext context, ITransactionService transactionService)
         {
@@ -27,83 +23,23 @@ namespace ConsoleApp.Controllers
         }
 
 
-        public class CustomerPerCountryModel
-        {
-            public int CustomerId { get; set; }
-            public string Country { get; set; }
-
-            public Account Account { get; set; }
-        }
-
-
-
-        public class SusSingleTransaction
-        {
-            public int AccountId { get; set; }
-            public int TransactionId { get; set; }
-            public decimal Amount { get; set; }
-            public DateTime Date { get; set; }
-        }
-
-
-
-        public class SusManyTransactions
-        {
-            public DateTime Date { get; set; }
-            public IEnumerable<Transaction> Transactions { get; set; }
-        }
-
-
 
         public class SusTransactionsPerCountry
         {
-            public IEnumerable<SusSingleTransaction> SusSingle { get; set; }
-            public IEnumerable<SusManyTransactions> SusMany { get; set; }
+            public IEnumerable<SusSingleTransactionDTO> SusSingle { get; set; }
+            public IEnumerable<SusManyTransactionsDTO> SusMany { get; set; }
 
         }
 
-
-
-
-        public IEnumerable<CustomerPerCountryModel> CustomersPerCountry(string country)
-        {
-            var customers = _context.Customers
-                .Include(c => c.Dispositions)
-                .ThenInclude(d => d.Account)
-                .ThenInclude(a => a.Transactions)
-                .Where(c => c.Country == country)
-                .SelectMany(c => c.Dispositions) //// THIS IS THE ONE I WAS MISSING. TACK RICHARD
-                .Select(c => new CustomerPerCountryModel
-                {
-                    CustomerId = c.CustomerId,
-                    Country = country,
-                    Account = c.Account
-                })
-                .ToList();
-
-            _transactionService.Test();
-
-            return customers;
-
-        }
 
         public SusTransactionsPerCountry TransactionsPerCountry(string country)
         {
-            var customers = CustomersPerCountry(country);
-            var accounts = customers.Select(c => c.Account);
-
-            var susSingleTransactions = GetSusSingleTransactions(country);
-
-
+          
             var susTransactionsPerCountry = new SusTransactionsPerCountry();
 
-            
 
-           
-
-
-            susTransactionsPerCountry.SusSingle = susSingleTransactions;
-            susTransactionsPerCountry.SusMany = susManyTransactions;
+            susTransactionsPerCountry.SusSingle = GetSusSingleTransactions(country);
+            susTransactionsPerCountry.SusMany = GetSusThreeDaysTransactions(country);
 
 
 
@@ -112,39 +48,57 @@ namespace ConsoleApp.Controllers
         }
 
 
-        private IEnumerable<SusSingleTransaction> GetSusSingleTransactions(string country)
+        private IEnumerable<SusSingleTransactionDTO> GetSusSingleTransactions(string country)
         {
-            var customers = CustomersPerCountry(country);
-            var accounts = customers.Select(c => c.Account);
+            var customers = _transactionService.CustomersPerCountry(country);
+            //var accounts = customers.Select(c => c.Account);
 
-            var susSingleTransactions = new List<SusSingleTransaction>();
+
+            var susSingleTransactions = customers
+                .Select(c => c.Account)
+                .SelectMany(a => a.Transactions)
+                .OrderBy(t => t.Date)
+                .Where(t => t.Amount > 15000)
+                .Select(t => new SusSingleTransactionDTO
+                {
+                    TransactionId = t.TransactionId,
+                    AccountId = t.AccountId,
+                    Amount = t.Amount,
+                    Date = t.Date,
+
+                });
+                
+            //var susSingleTransactions = new List<SusSingleTransactionDTO>();
+
+            
 
             //SINGLE FOREACH
-            foreach (var account in accounts)
-            {
-                foreach (var transaction in account.Transactions.OrderBy(t => t.Date))
-                {
-                    if (transaction.Amount > 15000)
-                    {
-                        susSingleTransactions.Add(new SusSingleTransaction
-                        {
-                            TransactionId = transaction.TransactionId,
-                            AccountId = transaction.AccountId,
-                            Amount = transaction.Amount,
-                            Date = transaction.Date,
-                        });
-                    }
-                }
-            }
+            //foreach (var account in accounts)
+            //{
+            //    foreach (var transaction in account.Transactions.OrderBy(t => t.Date))
+            //    {
+            //        if (transaction.Amount > 15000)
+            //        {
+            //            susSingleTransactions.Add(new SusSingleTransactionDTO
+            //            {
+            //                TransactionId = transaction.TransactionId,
+            //                AccountId = transaction.AccountId,
+            //                Amount = transaction.Amount,
+            //                Date = transaction.Date,
+            //            });
+            //        }
+            //    }
+            //}
 
             return susSingleTransactions;
         }
 
-        private IEnumerable<SusManyTransactions> GetSusThreeDaysTransactions(string country)
+        private IEnumerable<SusManyTransactionsDTO> GetSusThreeDaysTransactions(string country)
         {
 
-            var customers = CustomersPerCountry(country);
+            var customers = _transactionService.CustomersPerCountry(country);
             var accounts = customers.Select(c => c.Account);
+            var susManyTransactions = new List<SusManyTransactionsDTO>();
 
             //THREE DAYS FOREACH
             foreach (var account in accounts)
@@ -176,7 +130,7 @@ namespace ConsoleApp.Controllers
                     if (total > 23000)
                     {
 
-                        var sus = threeDaysSusTransaction.Select(t => new SusManyTransactions
+                        var sus = threeDaysSusTransaction.Select(t => new SusManyTransactionsDTO
                         {
                             Date = t.Date,
                             Transactions = threeDaysSusTransaction,
@@ -185,7 +139,7 @@ namespace ConsoleApp.Controllers
 
                         foreach (var item in sus)
                         {
-                            susManyTransactions.Add(new SusManyTransactions
+                            susManyTransactions.Add(new SusManyTransactionsDTO
                             {
                                 Date = item.Date,
                                 Transactions = item.Transactions,
@@ -199,6 +153,8 @@ namespace ConsoleApp.Controllers
                 }
 
             }
+
+            return susManyTransactions;
         }
     }
 }

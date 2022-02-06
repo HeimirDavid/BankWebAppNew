@@ -1,4 +1,5 @@
 ﻿using BankWebApp.Models;
+using ConsoleApp.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace ConsoleApp.Services
 {
     public interface ITransactionService
     {
-       
+        public IEnumerable<CustomerDTO> CustomersPerCountry(string country);
     }
 }
