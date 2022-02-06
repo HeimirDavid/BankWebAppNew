@@ -59,14 +59,17 @@ namespace BankWebApp.Pages.Users
 
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
             Roles = _userService.GetUserRoles(editUserViewModel.Id);
             
             if (ModelState.IsValid)
             {
                 _userService.EditUser(editUserViewModel);
+                return RedirectToPage("../Users/User/", new { userId = editUserViewModel.Id, Edit = true });
             }
+
+            return Page();
 
         }
     }

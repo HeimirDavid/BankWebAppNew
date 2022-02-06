@@ -78,7 +78,7 @@ namespace BankWebApp.Pages.Customers
             if (ModelState.IsValid)
             {
                 _customerService.UpdateCustomer(CustomerViewModel);
-                return RedirectToPage("../Customers/Customer/", new { customerId = CustomerId, Edit = true });
+                return RedirectToPage("../Customers/Customer/", new { customerId = CustomerId, edit = true });
             }
             return Page();
             

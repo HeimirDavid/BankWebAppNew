@@ -194,18 +194,6 @@ namespace BankWebApp.Services
 
 
 
-
-
-
-        //private IUserEmailStore<User> GetEmailStore()
-        //{
-        //    if (!_userManager.SupportsUserEmail)
-        //    {
-        //        throw new NotSupportedException("The default UI requires a user store with email support.");
-        //    }
-        //    return (IUserEmailStore<User>)_userStore;
-        //}
-
         private User CreateUser()
         {
             try

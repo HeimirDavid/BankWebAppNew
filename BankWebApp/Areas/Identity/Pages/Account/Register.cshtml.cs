@@ -31,7 +31,6 @@ namespace BankWebApp.Areas.Identity.Pages.Account
         private readonly IUserStore<User> _userStore;
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
@@ -40,7 +39,6 @@ namespace BankWebApp.Areas.Identity.Pages.Account
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender)
         {
             _userService = userService;
@@ -49,7 +47,6 @@ namespace BankWebApp.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            //_roleManager = roleManager;
             _emailSender = emailSender;
         }
 

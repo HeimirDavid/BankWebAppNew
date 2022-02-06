@@ -23,7 +23,7 @@ namespace BankWebApp.Pages.Users
         public string CustomerName { get; set; }
         public string SearchWord { get; set; }
 
-        public void OnGet(string sortColumn, string sortOrder, int pageno, string searchWord)
+        public void OnGet(string sortColumn, string sortOrder, int pageno, string searchWord, bool edit)
         {
             SortOrder = sortOrder;
             SortColumn = sortColumn;
@@ -39,15 +39,7 @@ namespace BankWebApp.Pages.Users
 
 
             PageCount = Items.FirstOrDefault().PageCount;
-
-
-            //Items = pageResult.Results.Select(i => new UsersViewModel
-            //{
-            //    Id = i.Id,
-            //    UserName = i.UserName,
-            //    Email = i.Email,
-            //    PhoneNumber = i.PhoneNumber,
-            //}).ToList();
+            
         }
     }
 }
