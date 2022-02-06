@@ -13,50 +13,38 @@ namespace ConsoleApp.Controllers
     public class TransactionsController
     {
 
-        private readonly BankContext _context;
         private readonly ITransactionService _transactionService;
 
-        public TransactionsController(BankContext context, ITransactionService transactionService)
+        public TransactionsController(ITransactionService transactionService)
         {
-            _context = context;
             _transactionService = transactionService;
         }
 
 
-
-        public class SusTransactionsPerCountry
-        {
-            public IEnumerable<SusSingleTransactionDTO> SusSingle { get; set; }
-            public IEnumerable<SusManyTransactionsDTO> SusMany { get; set; }
-
-        }
-
-
-        public SusTransactionsPerCountry TransactionsPerCountry(string country)
+        public SusTransactionsPerCountryDTO TransactionsPerCountry(string country)
         {
           
-            var susTransactionsPerCountry = new SusTransactionsPerCountry();
+            var susTransactionsPerCountry = new SusTransactionsPerCountryDTO();
 
 
             susTransactionsPerCountry.SusSingle = GetSusSingleTransactions(country);
             susTransactionsPerCountry.SusMany = GetSusThreeDaysTransactions(country);
 
-
-
             return susTransactionsPerCountry;
 
         }
 
-
+        /// TA IN ETT DATUM
         private IEnumerable<SusSingleTransactionDTO> GetSusSingleTransactions(string country)
         {
             var customers = _transactionService.CustomersPerCountry(country);
-            //var accounts = customers.Select(c => c.Account);
 
+            var dateLastRun = _transactionService.ReadDateFromTextFile();
 
             var susSingleTransactions = customers
                 .Select(c => c.Account)
                 .SelectMany(a => a.Transactions)
+                .Where(t => t.Date > dateLastRun)
                 .OrderBy(t => t.Date)
                 .Where(t => t.Amount > 15000)
                 .Select(t => new SusSingleTransactionDTO
@@ -67,31 +55,11 @@ namespace ConsoleApp.Controllers
                     Date = t.Date,
 
                 });
-                
-            //var susSingleTransactions = new List<SusSingleTransactionDTO>();
-
-            
-
-            //SINGLE FOREACH
-            //foreach (var account in accounts)
-            //{
-            //    foreach (var transaction in account.Transactions.OrderBy(t => t.Date))
-            //    {
-            //        if (transaction.Amount > 15000)
-            //        {
-            //            susSingleTransactions.Add(new SusSingleTransactionDTO
-            //            {
-            //                TransactionId = transaction.TransactionId,
-            //                AccountId = transaction.AccountId,
-            //                Amount = transaction.Amount,
-            //                Date = transaction.Date,
-            //            });
-            //        }
-            //    }
-            //}
 
             return susSingleTransactions;
         }
+
+
 
         private IEnumerable<SusManyTransactionsDTO> GetSusThreeDaysTransactions(string country)
         {
@@ -100,18 +68,19 @@ namespace ConsoleApp.Controllers
             var accounts = customers.Select(c => c.Account);
             var susManyTransactions = new List<SusManyTransactionsDTO>();
 
+
             //THREE DAYS FOREACH
             foreach (var account in accounts)
             {
-                var transactions = _context.Transactions
-                    .Where(a => a.AccountId == account.AccountId)
-                    .OrderBy(t => t.Date);
-
+                var transactions = _transactionService.GetTransactionsForAccount(account.AccountId);
+                
                 foreach (var transaction in transactions)
                 {
+                    //Transaction dates for comparison
                     var dateOfTransaction = transaction.Date;
                     var threeDaysBefore = dateOfTransaction.AddDays(-3);
 
+                    //List to fill with transactions over the past 3 days
                     var threeDaysSusTransaction = new List<Transaction>();
 
                     foreach (var susTransaction in account.Transactions.Where(t => t.Date >= threeDaysBefore && t.Date <= dateOfTransaction))
@@ -119,7 +88,7 @@ namespace ConsoleApp.Controllers
                         threeDaysSusTransaction.Add(susTransaction);
                     }
 
-
+                    //Loop through the 3 days transactions and check the total. If it is over certain rule (23000), add to suspicious list
                     decimal total = 0;
 
                     foreach (var item in threeDaysSusTransaction)
@@ -145,8 +114,6 @@ namespace ConsoleApp.Controllers
                                 Transactions = item.Transactions,
                             });
                         }
-
-
 
                     }
 

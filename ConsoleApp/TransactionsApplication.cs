@@ -1,21 +1,24 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using ConsoleApp.Controllers;
-
+using ConsoleApp.Services;
 
 internal class TransactionsApplication
 {
-    
+
     private readonly TransactionsController _transactionsController;
 
+    private readonly ITransactionService _transactionService;
 
-    public TransactionsApplication(TransactionsController transactionsController)
+    public TransactionsApplication(TransactionsController transactionsController, ITransactionService transactionService)
     {
         _transactionsController = transactionsController;
+        _transactionService = transactionService;
     }
 
     public void Run()
     {
         CreateRapport();
+        _transactionService.WriteDateToTextFile();
     }
 
 
@@ -25,7 +28,7 @@ internal class TransactionsApplication
 
         DateTime date = DateTime.Today;
         var dateOnly = date.ToString("dd/MM/yyyy");
-         
+
 
         foreach (var country in Countries)
         {
@@ -34,8 +37,10 @@ internal class TransactionsApplication
             writer.WriteLine("");
             writer.WriteLine(country);
 
+
             var susTransactions = _transactionsController.TransactionsPerCountry(country);
 
+            //Create repports for single transactions over 15000
             writer.WriteLine(" ");
             writer.WriteLine("Single Transactions over 15000:");
             foreach (var item in susTransactions.SusSingle)
@@ -47,9 +52,37 @@ internal class TransactionsApplication
                 writer.WriteLine(" ");
             }
 
+
+            //Create repports for three days transactions over 23000
+            writer.WriteLine("-----------------------------------------");
+            writer.WriteLine(" ");
+            writer.WriteLine("Multiple transactions over 23000, or single over 23000:");
+            writer.WriteLine(" ");
+
+            foreach (var transactions in susTransactions.SusMany)
+            {
+                writer.WriteLine("-----------------------------------------");
+                writer.WriteLine("Suspicious transaction(s)");
+                writer.WriteLine("-----------------------------------------");
+                writer.WriteLine(" ");
+
+
+                foreach (var item in transactions.Transactions)
+                {
+                    writer.WriteLine($"Transaction-ID: {item.TransactionId}");
+                    writer.WriteLine($"Account-ID: {item.AccountId}");
+                    writer.WriteLine($"Amount: {item.Amount}");
+                    writer.WriteLine($"Date: {item.Date}");
+                    writer.WriteLine(" ");
+                }
+            }
+
+
+
             Console.WriteLine($"Report for {country} created successfully");
             writer.Close();
         }
+
     }
 
 

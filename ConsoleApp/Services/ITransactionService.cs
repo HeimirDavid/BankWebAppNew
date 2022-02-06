@@ -11,5 +11,9 @@ namespace ConsoleApp.Services
     public interface ITransactionService
     {
         public IEnumerable<CustomerDTO> CustomersPerCountry(string country);
+        public IEnumerable<Transaction> GetTransactionsForAccount(int accountId);
+
+        public DateTime ReadDateFromTextFile();
+        public void WriteDateToTextFile();
     }
 }

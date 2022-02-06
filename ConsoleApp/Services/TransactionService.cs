@@ -17,6 +17,8 @@ namespace ConsoleApp.Services
             _context = context;
         }
 
+
+
         public IEnumerable<CustomerDTO> CustomersPerCountry(string country)
         {
             var customers = _context.Customers
@@ -37,5 +39,32 @@ namespace ConsoleApp.Services
 
         }
 
+        public IEnumerable<Transaction> GetTransactionsForAccount(int accountId)
+        {
+            var date = ReadDateFromTextFile();
+
+           var accounts = _context.Transactions
+                .Where(a => a.AccountId == accountId)
+                .Where(a => a.Date > date)
+                .OrderBy(t => t.Date);
+
+            return accounts;
+        }
+
+        public DateTime ReadDateFromTextFile()
+        {
+            string d = File.ReadAllText("../../../Reports/LastRun.txt");
+            var LastRunDate = DateTime.Parse(d);
+
+            return LastRunDate;
+        }
+
+        public void WriteDateToTextFile()
+        {
+            string path = "../../../Reports/LastRun.txt";
+            string d = DateTime.Now.Date.ToString();
+            //var LastRunDate = DateTime.Parse(d);
+            File.WriteAllText(path, d);
+        }
     }
 }
