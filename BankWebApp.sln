@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "BankWebApp\WebApp.csproj", "{70F6F1CE-1179-434F-9C74-510E8E80D361}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{FB7EEA2C-31BA-47B0-8380-1C030DF5AC01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{FB7EEA2C-31BA-47B0-8380-1C030DF5AC01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{464F3B26-0991-458C-9806-B7CBB1A26FF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{464F3B26-0991-458C-9806-B7CBB1A26FF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{10B0505C-D7A2-4971-8095-1DB771497F62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{464F3B26-0991-458C-9806-B7CBB1A26FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{464F3B26-0991-458C-9806-B7CBB1A26FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{464F3B26-0991-458C-9806-B7CBB1A26FF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B0505C-D7A2-4971-8095-1DB771497F62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B0505C-D7A2-4971-8095-1DB771497F62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B0505C-D7A2-4971-8095-1DB771497F62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B0505C-D7A2-4971-8095-1DB771497F62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
