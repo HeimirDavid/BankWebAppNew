@@ -9,6 +9,6 @@ namespace ConsoleApp.Services
 {
     public interface ITransactionService
     {
-        public IEnumerable<Transaction> GetAll();
+       
     }
 }

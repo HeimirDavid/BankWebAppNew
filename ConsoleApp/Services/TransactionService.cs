@@ -15,11 +15,7 @@ namespace ConsoleApp.Services
             _context = context;
         }
 
-        public IEnumerable<Transaction> GetAll()
-        {
-            var transactions = _context.Transactions.AsQueryable();
-
-            return transactions;
-        }
+        
+      
     }
 }

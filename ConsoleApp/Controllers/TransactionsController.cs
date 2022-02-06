@@ -17,10 +17,13 @@ namespace ConsoleApp.Controllers
         //    _transactionService = transactionService;
         //}
         private readonly BankContext _context;
+        private readonly ITransactionService _transactionService;
 
-        public TransactionsController(BankContext context)
+
+        public TransactionsController(BankContext context, ITransactionService transactionService)
         {
             _context = context;
+            _transactionService = transactionService;
         }
 
 
@@ -50,16 +53,13 @@ namespace ConsoleApp.Controllers
             public IEnumerable<Transaction> Transactions { get; set; }
         }
 
-       
-        //public class SusManyTransactionsObjects
-        //{
-        //    public IEnumerable<SusManyTransactions> SusTransactions { get; set; }
-        //}
+
 
         public class SusTransactionsPerCountry
         {
             public IEnumerable<SusSingleTransaction> SusSingle { get; set; }
             public IEnumerable<SusManyTransactions> SusMany { get; set; }
+
         }
 
 
@@ -81,6 +81,7 @@ namespace ConsoleApp.Controllers
                 })
                 .ToList();
 
+            _transactionService.Test();
 
             return customers;
 
@@ -91,11 +92,32 @@ namespace ConsoleApp.Controllers
             var customers = CustomersPerCountry(country);
             var accounts = customers.Select(c => c.Account);
 
-            var susSingleTransactions = new List<SusSingleTransaction>();
-            var susManyTransactions = new List<SusManyTransactions>();
+            var susSingleTransactions = GetSusSingleTransactions(country);
 
 
             var susTransactionsPerCountry = new SusTransactionsPerCountry();
+
+            
+
+           
+
+
+            susTransactionsPerCountry.SusSingle = susSingleTransactions;
+            susTransactionsPerCountry.SusMany = susManyTransactions;
+
+
+
+            return susTransactionsPerCountry;
+
+        }
+
+
+        private IEnumerable<SusSingleTransaction> GetSusSingleTransactions(string country)
+        {
+            var customers = CustomersPerCountry(country);
+            var accounts = customers.Select(c => c.Account);
+
+            var susSingleTransactions = new List<SusSingleTransaction>();
 
             //SINGLE FOREACH
             foreach (var account in accounts)
@@ -114,6 +136,15 @@ namespace ConsoleApp.Controllers
                     }
                 }
             }
+
+            return susSingleTransactions;
+        }
+
+        private IEnumerable<SusManyTransactions> GetSusThreeDaysTransactions(string country)
+        {
+
+            var customers = CustomersPerCountry(country);
+            var accounts = customers.Select(c => c.Account);
 
             //THREE DAYS FOREACH
             foreach (var account in accounts)
@@ -144,7 +175,7 @@ namespace ConsoleApp.Controllers
 
                     if (total > 23000)
                     {
-                        
+
                         var sus = threeDaysSusTransaction.Select(t => new SusManyTransactions
                         {
                             Date = t.Date,
@@ -160,7 +191,7 @@ namespace ConsoleApp.Controllers
                                 Transactions = item.Transactions,
                             });
                         }
-                       
+
 
 
                     }
@@ -168,15 +199,6 @@ namespace ConsoleApp.Controllers
                 }
 
             }
-
-
-            susTransactionsPerCountry.SusSingle = susSingleTransactions;
-            susTransactionsPerCountry.SusMany = susManyTransactions;
-
-
-
-            return susTransactionsPerCountry;
-
         }
     }
 }

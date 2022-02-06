@@ -8,28 +8,57 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 
-string connectionString = "Server=.;Database=BankNewUsers;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-var builder = new ConfigurationBuilder()
-    .AddJsonFile($"appsettings.json", true, true);
-var config = builder.Build();
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((context, services) =>
+        services
 
-var options = new DbContextOptionsBuilder<BankContext>();
-//NOT BEING USED ATM
-string s =
-    config.GetConnectionString("DefaultConnection");
-options.UseSqlServer(connectionString);
-
-//using (var context = new BankContext(options.Options))
-//{
-//    var dataInitializer = new DataInitializer();
-//    dataInitializer.MigrateAndSeed(context);
-//}
+        // Add Bank Db and Services to the container.
+        .AddDbContext<BankContext>(options =>
+        options.UseSqlServer(
+        context.Configuration.GetConnectionString("DefaultConnection")))
+            .AddTransient<ITransactionService, TransactionService>()
+            .AddTransient<TransactionsController>()
+            .AddTransient<TransactionsApplication>()
+            )
+    .Build();
 
 
 
-var app = new TransactionsApplication(s);
-app.Run();
+
+using (var scope = host.Services.CreateScope())
+{
+    scope.ServiceProvider.GetService<TransactionsApplication>().Run();
+}
+
+host.Run();
+
+
+
+
+
+//string connectionString = "Server=.;Database=BankNewUsers;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+//var builder = new ConfigurationBuilder()
+//    .AddJsonFile($"appsettings.json", true, true);
+//var config = builder.Build();
+
+//var options = new DbContextOptionsBuilder<BankContext>();
+////NOT BEING USED ATM
+//string s =
+//    config.GetConnectionString("DefaultConnection");
+//options.UseSqlServer(connectionString);
+
+////using (var context = new BankContext(options.Options))
+////{
+////    var dataInitializer = new DataInitializer();
+////    dataInitializer.MigrateAndSeed(context);
+////}
+
+
+
+//var app = new TransactionsApplication();
+//app.Run();
 
 
 
