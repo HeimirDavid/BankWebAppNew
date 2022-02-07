@@ -1,8 +1,0 @@
-
-Norway
- 
-Single Transactions over 15000:
------------------------------------------
- 
-Multiple transactions over 23000, or single over 23000:
- 
