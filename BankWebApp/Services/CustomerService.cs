@@ -125,6 +125,8 @@ namespace BankWebApp.Services
             return Item;
         }
 
+
+
         public Customer GetCustomerWithAccountNo(int accountId)
         {
             var query = _context.Dispositions.Include(d => d.Customer).First(d => d.AccountId == accountId);
@@ -145,7 +147,7 @@ namespace BankWebApp.Services
             var DBCustomer = _mapper.Map<Customer>(customer);
 
             //Create a user based on the Customer
-            //FROM SEED 
+            //CODE FROM SEED 
             if (_userManager.FindByEmailAsync(DBCustomer.Emailaddress).Result != null) return;
 
             var user = new User
@@ -160,8 +162,6 @@ namespace BankWebApp.Services
             _userManager.CreateAsync(user, password).Wait();
             _userManager.AddToRolesAsync(user, roles).Wait();
 
-
-            //_context.Customers.Add(DBCustomer);
 
             var Account = new Account
             {
@@ -194,19 +194,19 @@ namespace BankWebApp.Services
 
 
 
-        private User CreateUser()
-        {
-            try
-            {
-                return Activator.CreateInstance<User>();
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
-                    $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
-        }
+        //private User CreateUser()
+        //{
+        //    try
+        //    {
+        //        return Activator.CreateInstance<User>();
+        //    }
+        //    catch
+        //    {
+        //        throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
+        //            $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+        //            $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+        //    }
+        //}
     }
 
 }

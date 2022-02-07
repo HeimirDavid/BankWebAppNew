@@ -122,8 +122,10 @@
             }
         </div>
         <!--   Div för sista next   -->
-
+        
         <div>
+            @if (Model.CurrentPage != Model.PageCount)
+                        {
             <a class="btn btn-secondary" asp-page="/Users/Index"
                asp-route-pageno="@(Model.CurrentPage+1)"
                asp-route-searchWord="@Model.SearchWord"
@@ -138,7 +140,7 @@
                asp-route-sortOrder="@Model.SortOrder">
                 @Model.PageCount
             </a>
-
+            }
         </div>
     </div>
 

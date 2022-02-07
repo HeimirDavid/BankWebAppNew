@@ -20,8 +20,10 @@ namespace BankWebApp.Pages
         public string SortColumn { get; set; }
         public string CustomerName { get; set; }
         public string SearchWord { get; set; }
+        public string RegisterSuccess { get; set; }
 
-        public void OnGet(string sortColumn, string sortOrder, int pageno, string searchWord)
+
+        public void OnGet(string sortColumn, string sortOrder, int pageno, string searchWord, bool register)
         {
             SortOrder = sortOrder;
             SortColumn = sortColumn;
@@ -45,6 +47,11 @@ namespace BankWebApp.Pages
                 City = i.City,
                 SSN = i.NationalId,
             }).ToList();
+
+            if (register)
+            {
+                RegisterSuccess = "New customer created!";
+            }
         }
     }
 }

@@ -89,6 +89,7 @@ namespace BankWebApp.Pages.Customers
             if (ModelState.IsValid)
             {
                 _customerService.AddCustomer(NewCustomer, Password, ConfirmPassword);
+                return RedirectToPage("../Customers/CustomersIndex/", new { register = true });
             }
 
 
@@ -125,28 +126,5 @@ namespace BankWebApp.Pages.Customers
             
         }
 
-        //protected void Page_Load()
-
-        //{
-
-        //    CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures);
-
-        //    Response.WriteAsync("<table border=\"1\"><tr><th>Country Name</th><th>Language-Country code</th></tr>");
-
-        //    foreach (CultureInfo cul in cinfo)
-
-        //    {
-
-        //        Response.WriteAsync("<tr>");
-
-        //        Response.WriteAsync("<td>" + cul.DisplayName + " </td><td> " + cul.TwoLetterISOLanguageName + "</td>");
-
-        //        Response.WriteAsync("</tr>");
-
-        //    }
-
-        //    Response.WriteAsync("</table>");
-
-        //}
     }
 }

@@ -1,4 +1,0 @@
-* 	Edit Customer, why do i loose the customerId?
-	If i where to hide it using an hidden input, how can i protect it?
-
-* 	Better work around the SelectListItems, mainly the Error handling..

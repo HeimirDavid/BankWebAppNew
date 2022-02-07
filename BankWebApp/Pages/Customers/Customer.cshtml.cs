@@ -33,6 +33,7 @@ namespace BankWebApp.Pages.Customers
             {
                 EditSuccess = "Customer updated!";
             }
+            
         }
     }
 }

@@ -13,18 +13,23 @@ namespace BankWebApp.Pages.Users
 
         public UserViewModel userViewModel { get; set; }
         public string EditSuccess { get; set; }
+        public string RegisterSuccess { get; set; }
 
 
         public UserModel(IUserService userService)
         {
             _userService = userService;
         }
-        public void OnGet(string userId, bool edit)
+        public void OnGet(string userId, bool edit, bool register)
         {
             userViewModel = _userService.GetUser(userId);
             if (edit)
             {
                 EditSuccess = "User updated!";
+            }
+            if (register)
+            {
+                RegisterSuccess = "New user created!";
             }
         }
     }

@@ -1,11 +1,7 @@
-* Add transaction account to customer...
-* Be able to add a customer as a disponant to an already axcisting account.
-* Create new USERS, give a choice of what roles to give them.
-* Update USERS, including changing roles.
-* 
+Successmessage on register customer and user - DONE
+Seed Customer for API
+Responsiveness
 
-VG ->
-¨Register new customer.
-Choose role (s)
-Redirect to same page, not confirm account
-Send successmessage.
+Users pageinator error
+ - DONE
+MAKE SURE LAST PUSH HAS CORRECT DATE ON CONSOLE APP!!!
