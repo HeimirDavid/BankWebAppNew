@@ -39,53 +39,70 @@ namespace BankWebApp.Services
             Countries.Add(Denmark);
 
 
-            var query = _context.Accounts
-                    .Include(a => a.Dispositions)
-                    .ThenInclude(d => d.Customer);
+            //var query = _context.Accounts
+            //        .Include(a => a.Dispositions)
+            //        .ThenInclude(d => d.Customer)
+            //        .ToList();
 
-            List<Data> accountData = new List<Data>();
 
             foreach (var country in Countries)
             {
+                var query2 = _context.Customers
+                    .Where(c => c.Country == country.CountryName)
+                    .Include(a => a.Dispositions)
+                    .ThenInclude(d => d.Account).ToList();
 
-                foreach (var account in query)
-                {
-
-                    foreach (var disposition in account.Dispositions)
-                    {
-                        if (disposition.Customer != null)
-                        {
-                            if (disposition.Customer.Country == country.CountryName)
-                            {
-                                accountData.Add(new Data
-                                {
-                                    AccountId = account.AccountId,
-                                    Balance = account.Balance,
-                                    CustomerId = disposition.Customer.CustomerId,
-                                    CustomerName = disposition.Customer.Givenname,
-                                    CountryName = disposition.Customer.Country,
-                                });
-
-                                country.Customers++;
-                            }
-                        }
-
-                    }
-                 
-                }
+                country.Customers = query2.Count();
+                country.Accounts = query2.Sum(c => c.Dispositions.Count(d => d.Type == "OWNER"));
+                country.Balance = query2.Sum(c => c.Dispositions.Where(d => d.Type == "OWNER").Sum(d => d.Account.Balance));
             }
+            
 
-            List<Data> DataWithoutDublicates = accountData
-                   .GroupBy(c => c.AccountId)
-                   .Select(c => c.First())
-                   .ToList();
+
+
+            //List<Data> accountData = new List<Data>();
+
+            //foreach (var country in Countries)
+            //{
+
+            //    foreach (var account in query)
+            //    {
+
+            //        foreach (var disposition in account.Dispositions)
+            //        {
+            //            if (disposition.Customer != null)
+            //            {
+            //                if (disposition.Customer.Country == country.CountryName)
+            //                {
+            //                    accountData.Add(new Data
+            //                    {
+            //                        AccountId = account.AccountId,
+            //                        Balance = account.Balance,
+            //                        CustomerId = disposition.Customer.CustomerId,
+            //                        CustomerName = disposition.Customer.Givenname,
+            //                        CountryName = disposition.Customer.Country,
+            //                    });
+
+            //                    country.Customers++;
+            //                }
+            //            }
+
+            //        }
+                 
+            //    }
+            //}
+
+            //List<Data> DataWithoutDublicates = accountData
+            //       .GroupBy(c => c.AccountId)
+            //       .Select(c => c.First())
+            //       .ToList();
 
           
-            foreach (var country in Countries)
-            {
-                country.Accounts = DataWithoutDublicates.Where(d => d.CountryName == country.CountryName).Count();
-                country.Balance = DataWithoutDublicates.Where(d => d.CountryName == country.CountryName).Sum(d => d.Balance);
-            }
+            //foreach (var country in Countries)
+            //{
+            //    country.Accounts = DataWithoutDublicates.Where(d => d.CountryName == country.CountryName).Count();
+            //    country.Balance = DataWithoutDublicates.Where(d => d.CountryName == country.CountryName).Sum(d => d.Balance);
+            //}
 
             return Countries;
         }

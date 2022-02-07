@@ -1,5 +1,5 @@
 Successmessage on register customer and user - DONE
-Seed Customer for API
+Seed Customer for API - DONE
 Responsiveness
 Countries table colour - DONE
 Response cashing test (clock removal) - DONE

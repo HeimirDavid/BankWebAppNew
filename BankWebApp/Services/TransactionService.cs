@@ -10,15 +10,8 @@ namespace BankWebApp.Services
 
         public DateTime TodaysDate { get; set; }
 
-        DateTime date1 = DateTime.Now;
-
         public decimal AmountTooHigh { get; set; } = 15000;
 
-        //enum Season
-        //{
-        //    FirstDay = 1,
-        //    Sunday = 0,
-        //}
 
         public Tuple<int, int> GetWeek(DateTime d)
         {
@@ -35,9 +28,6 @@ namespace BankWebApp.Services
                 DayOfWeek.Monday);
 
             int year = weekNum == 52 && d.Month == 1 ? d.Year - 1 : d.Year;
-            Console.WriteLine("Year: {0} Week: {1}", year, weekNum);
-
-
 
             return Tuple.Create(weekNum, year);
         }
@@ -60,7 +50,7 @@ namespace BankWebApp.Services
 
         public IEnumerable<Transaction> GetLastWeek()
         {
-            TodaysDate = date1;
+            TodaysDate = DateTime.Now;
             var WeekNumAndYear = GetWeek(TodaysDate);
 
             int WeekNum = WeekNumAndYear.Item1 -2;
@@ -70,7 +60,7 @@ namespace BankWebApp.Services
             var FirstDayOfTheWeek = weekDates.First();
             var LastDayOfTheWeek = weekDates.Last();
 
-            var query = _context.Transactions.Where(t => t.Date >= FirstDayOfTheWeek && t.Date <= LastDayOfTheWeek);
+            var query = _context.Transactions.Where(t => t.Date >= FirstDayOfTheWeek && t.Date <= LastDayOfTheWeek).ToList();
 
            
             return query;
@@ -78,7 +68,7 @@ namespace BankWebApp.Services
 
         public IEnumerable<Transaction> GetThisWeek()
         {
-            TodaysDate = date1;
+            TodaysDate = DateTime.Now;
             var WeekNumAndYear = GetWeek(TodaysDate);
 
             int WeekNum = WeekNumAndYear.Item1 - 1;
@@ -88,7 +78,7 @@ namespace BankWebApp.Services
             var FirstDayOfTheWeek = weekDates.First();
             var LastDayOfTheWeek = weekDates.Last();
 
-            var query = _context.Transactions.Where(t => t.Date >= FirstDayOfTheWeek && t.Date <= LastDayOfTheWeek);
+            var query = _context.Transactions.Where(t => t.Date >= FirstDayOfTheWeek && t.Date <= LastDayOfTheWeek).ToList();
 
 
             return query;

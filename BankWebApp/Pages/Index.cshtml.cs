@@ -11,7 +11,6 @@ namespace BankWebApp.Pages
   
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
         private readonly IUserService _userService;
         private readonly ITransactionService _transactionService;
         private readonly ICustomerService _customerService;
@@ -20,7 +19,6 @@ namespace BankWebApp.Pages
         private readonly ICountryService _countryService;
 
         public IndexModel(
-            ILogger<IndexModel> logger, 
             IUserService userService, 
             ITransactionService transactionService,
             ICustomerService customerService,
@@ -29,7 +27,6 @@ namespace BankWebApp.Pages
             ICountryService countryService
             )
         {
-            _logger = logger;
             _userService = userService;
             _transactionService = transactionService;
             _customerService = customerService;
@@ -40,8 +37,6 @@ namespace BankWebApp.Pages
 
         public List<IndexUser> Users { get; set; }
         public DateTime TodaysDate { get; set; }
-
-        DateTime date1 = DateTime.Now;
         public TransactionPerWeekDay ThisWeek { get; set; }
         public TransactionPerWeekDay LastWeek { get; set; }
 
@@ -67,8 +62,11 @@ namespace BankWebApp.Pages
         {
             var query = _userService.GetUsers();
 
-            ThisWeek = GetThisWeeksTransactions();
-            LastWeek = GetLastWeeksTransactions();
+
+            //ThisWeek = GetThisWeeksTransactions();
+            //LastWeek = GetLastWeeksTransactions();
+            //LastWeek = new TransactionPerWeekDay();
+            //ThisWeek = new TransactionPerWeekDay();
 
             NumberOfCustomers = _customerService.NumberOfAllCustomers();
             NumberOfAccounts = _accountService.NumberOfAllAccounts();
@@ -83,12 +81,6 @@ namespace BankWebApp.Pages
         public TransactionPerWeekDay GetLastWeeksTransactions()
         {
             var Transactions = _transactionService.GetLastWeek();
-
-            var numberOfTransactions = new List<int>();
-
-            var PreviousDate = new DateTime();
-
-            var FirstDate = Transactions.ToList().FirstOrDefault()?.Date;
 
             TransactionPerWeekDay transactionPerWeekDay = new TransactionPerWeekDay();
 

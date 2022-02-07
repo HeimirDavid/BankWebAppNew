@@ -109,7 +109,7 @@ namespace BankWebApp.Services
         public IEnumerable<IdentityRole> GetUserRoles(string userId)
         {
             var user = _userManager.Users.First(u => u.Id == userId);
-            var userRoles = _context.UserRoles.Where(ur => ur.UserId == userId);
+            var userRoles = _context.UserRoles.Where(ur => ur.UserId == userId).ToList();
 
             var roles = new List<IdentityRole>();
 
