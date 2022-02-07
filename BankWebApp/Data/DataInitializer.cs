@@ -1,4 +1,6 @@
 ﻿using BankWebApp.Models;
+using BankWebApp.Services;
+using BankWebApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +10,13 @@ public class DataInitializer
 {
     private readonly BankContext _dbContext;
     private readonly UserManager<User> _userManager;
+    private readonly ICustomerService _customerService;
 
-    public DataInitializer(BankContext dbContext, UserManager<User> userManager)
+    public DataInitializer(BankContext dbContext, UserManager<User> userManager, ICustomerService customerService)
     {
         _dbContext = dbContext;
         _userManager = userManager;
+        _customerService = customerService;
     }
     public void SeedData()
     {
@@ -25,6 +29,7 @@ public class DataInitializer
     {
         AddUserIfNotExists("stefan.holmberg@systementor.se", "Hejsan123#", new string[] { "Admin" });
         AddUserIfNotExists("stefan.holmberg@customer.systementor.se", "Hejsan123#", new string[] { "Cashier" });
+        AddCustomerUserIfNotExists("stefan.holmberg@api-customer.systementor.se", "Hejsan123#", "Hejsan123#");
     }
 
     private void SeedRoles()
@@ -57,6 +62,30 @@ public class DataInitializer
         };
         _userManager.CreateAsync(user, password).Wait();
         _userManager.AddToRolesAsync(user, roles).Wait();
+    }
+
+    private void AddCustomerUserIfNotExists(string userName, string password, string passwordConfirm)
+    {
+        if (_userManager.FindByEmailAsync(userName).Result != null) return;
+
+        var customerModel = new NewCustomerViewModel
+        {
+            Gender = "Male",
+            Givenname = "Stefan",
+            Surname = "Holmberg",
+            Streetaddress = "CustomerStreet 123",
+            City = "CityOfCustomers",
+            Zipcode = "75255",
+            Country = "CustomerLand",
+            CountryCode = "SE",
+            Birthday = DateTime.Now,
+            Telephonecountrycode = "46",
+            Telephonenumber = "123123",
+            Emailaddress = "stefan.holmberg@api-customer.systementor.se"
+        };
+
+        _customerService.AddCustomer(customerModel, password, passwordConfirm);
+
     }
 
 
